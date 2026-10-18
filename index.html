@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f4">
+  <meta name="description" content="探索全球城市产业结构、代表企业与行业趋势">
+  <title>城势 CityScope — 城市产业观察</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d2825;
+      --muted: #77817b;
+      --line: #e8ebe5;
+      --paper: #f6f7f4;
+      --card: #fff;
+      --green: #205a47;
+      --green-dark: #164433;
+      --mint: #e8f1eb;
+      --orange: #e49b55;
+      --shadow: 0 12px 36px rgba(30, 48, 39, .055);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink);
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+      font-size: 14px; -webkit-font-smoothing: antialiased;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    .shell { width: min(1120px, calc(100% - 56px)); margin: 0 auto; }
+    .topbar { height: 76px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 16px; font-weight: 750; letter-spacing: -.04em; }
+    .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 11px; color: white; background: var(--green); }
+    .brand-mark svg { width: 19px; height: 19px; }
+    .brand-sub { margin-left: 2px; color: #a0a7a0; font-size: 10px; font-weight: 550; letter-spacing: .08em; }
+    .top-note { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #55a178; box-shadow: 0 0 0 3px #e8f1eb; }
+    .intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 38px 0 23px; }
+    .eyebrow { color: var(--green); font-size: 11px; font-weight: 750; letter-spacing: .14em; }
+    h1 { margin: 9px 0 0; font-size: clamp(28px, 4vw, 38px); line-height: 1.2; font-weight: 730; letter-spacing: -.055em; }
+    .subtitle { margin: 9px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .search { display: flex; align-items: center; width: min(360px, 44%); height: 46px; gap: 9px; padding: 5px 6px 5px 14px; border: 1px solid #e5e9e2; border-radius: 13px; background: white; box-shadow: 0 4px 15px rgba(30,48,39,.035); }
+    .search svg { flex: none; color: #8d9991; }
+    .search input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 13px; }
+    .search input::placeholder { color: #a1aaa3; }
+    .search button, .analyze-button { flex: none; height: 34px; padding: 0 15px; border: 0; border-radius: 9px; color: white; background: var(--green); font-size: 12px; font-weight: 650; cursor: pointer; transition: background .18s, transform .18s; }
+    .search button:hover, .analyze-button:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .search button:focus-visible, .analyze-button:focus-visible, .city-chip:focus-visible, .industry-button:focus-visible { outline: 3px solid #bfd8c9; outline-offset: 2px; }
+    .city-row { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+    .city-label { margin-right: 3px; color: #8b958e; font-size: 11px; }
+    .city-chip { padding: 6px 11px; border: 1px solid #e5e9e2; border-radius: 20px; color: #657169; background: transparent; font-size: 11px; cursor: pointer; transition: .18s; }
+    .city-chip:hover, .city-chip.active { border-color: #b8cec0; color: var(--green); background: #edf4ef; }
+    .notice { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; padding: 10px 13px; border: 1px solid #f0e8d8; border-radius: 10px; color: #887c64; background: #faf7ef; font-size: 11px; }
+    .notice svg { flex: none; color: #b3945e; }
+    .overview { display: grid; grid-template-columns: 1.05fr .95fr; gap: 16px; }
+    .panel { border: 1px solid var(--line); border-radius: 17px; background: var(--card); box-shadow: var(--shadow); }
+    .economy-panel { min-height: 354px; padding: 22px 23px; }
+    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .panel-title { margin: 0; font-size: 15px; font-weight: 720; letter-spacing: -.025em; }
+    .panel-subtitle { margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .year-tag { padding: 5px 8px; border: 1px solid #e9ece6; border-radius: 7px; color: #7b857e; background: #fafbf9; font-size: 10px; white-space: nowrap; }
+    .chart-area { display: flex; align-items: center; justify-content: center; gap: clamp(20px, 5vw, 56px); min-height: 258px; padding-top: 10px; }
+    .donut-wrap { position: relative; width: 190px; height: 190px; flex: none; }
+    .donut { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#24614b 0% 32%, #6aab88 32% 57%, #e3a35e 57% 75%, #93a7b9 75% 90%, #c8d4ca 90% 100%); transform: rotate(-90deg); }
+    .donut-hole { position: absolute; inset: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; background: white; text-align: center; }
+    .donut-city { max-width: 120px; overflow: hidden; color: var(--ink); font-size: 19px; font-weight: 750; letter-spacing: -.04em; text-overflow: ellipsis; white-space: nowrap; }
+    .donut-caption { margin-top: 5px; color: #87918a; font-size: 10px; }
+    .legend { display: grid; min-width: 165px; gap: 13px; }
+    .legend-item { display: grid; grid-template-columns: 9px 1fr auto; align-items: center; gap: 8px; color: #59645d; font-size: 11px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 3px; }
+    .legend-item strong { color: var(--ink); font-size: 11px; font-weight: 670; }
+    .hint { margin-top: 8px; color: #a0a9a2; font-size: 10px; }
+    .snapshot-panel { display: flex; flex-direction: column; padding: 22px 23px; }
+    .city-heading { display: flex; align-items: center; justify-content: space-between; margin: 21px 0 4px; }
+    .city-name { margin: 0; font-size: 27px; font-weight: 740; letter-spacing: -.055em; }
+    .city-meta { margin-top: 6px; color: var(--muted); font-size: 11px; }
+    .city-stamp { display: grid; width: 43px; height: 43px; place-items: center; border-radius: 14px; color: var(--green); background: var(--mint); font-size: 17px; font-weight: 750; }
+    .metric-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: auto; padding-top: 23px; }
+    .metric { padding: 13px 14px; border: 1px solid #edf0eb; border-radius: 11px; background: #fbfcfa; }
+    .metric-label { color: #89938c; font-size: 10px; }
+    .metric-value { margin-top: 7px; color: var(--ink); font-size: 18px; font-weight: 740; letter-spacing: -.04em; }
+    .metric-value span { margin-left: 4px; color: #89938c; font-size: 10px; font-weight: 500; letter-spacing: 0; }
+    .industry-panel { margin-top: 16px; padding: 22px 23px 20px; }
+    .comparison-panel { margin-top: 16px; padding: 22px 23px; }
+    .comparison-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 15px; }
+    .comparison-note { max-width: 430px; margin: 0; color: #78837b; font-size: 11px; line-height: 1.7; }
+    .comparison-form { display: flex; align-items: center; gap: 8px; width: min(460px, 60%); }
+    .comparison-form input { flex: 1; width: 100%; min-width: 0; height: 38px; padding: 0 11px; border: 1px solid #e5e9e2; border-radius: 9px; outline: 0; background: #fff; font-size: 12px; }
+    .comparison-form input:focus { border-color: #a9c3b2; box-shadow: 0 0 0 3px #edf4ef; }
+    .comparison-form input::placeholder { color: #a1aaa3; }
+    .comparison-form button { flex: none; height: 38px; padding: 0 13px; border: 0; border-radius: 9px; color: #fff; background: var(--green); font-size: 11px; font-weight: 650; cursor: pointer; }
+    .comparison-form button:hover:not(:disabled) { background: var(--green-dark); }
+    .comparison-form button:disabled, .comparison-form input:disabled { cursor: not-allowed; opacity: .55; }
+    .comparison-form button:focus-visible, .compare-remove:focus-visible { outline: 3px solid #bfd8c9; outline-offset: 2px; }
+    .comparison-status { min-height: 16px; margin: 7px 2px 0; color: #ac614d; font-size: 11px; }
+    .comparison-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 4px; }
+    .compare-card { min-width: 0; padding: 15px; border: 1px solid #edf0eb; border-radius: 12px; background: #fbfcfa; }
+    .compare-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .compare-region { overflow: hidden; color: #89938c; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .compare-name { margin: 5px 0 0; font-size: 16px; font-weight: 720; letter-spacing: -.03em; }
+    .compare-remove { flex: none; padding: 4px 7px; border: 1px solid #e8ece6; border-radius: 7px; color: #7c877f; background: #fff; font-size: 10px; cursor: pointer; }
+    .compare-remove:hover { border-color: #d8e3da; color: var(--green); }
+    .compare-gdp-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 17px; }
+    .compare-gdp-label { color: #89938c; font-size: 10px; }
+    .compare-gdp-value { color: var(--ink); font-size: 20px; font-weight: 740; letter-spacing: -.04em; white-space: nowrap; }
+    .compare-gdp-value small { margin-left: 4px; color: #89938c; font-size: 10px; font-weight: 500; letter-spacing: 0; }
+    .compare-bar-track { height: 7px; margin-top: 10px; overflow: hidden; border-radius: 8px; background: #e9eee9; }
+    .compare-bar { height: 100%; min-width: 3px; border-radius: inherit; background: linear-gradient(90deg, #5c9a73, #205a47); }
+    .compare-caption { margin: 8px 0 0; color: #8b958e; font-size: 10px; line-height: 1.55; }
+    .compare-empty { grid-column: 1 / -1; margin: 0; padding: 22px 12px; border: 1px dashed #dfe5dd; border-radius: 11px; color: #8b958e; text-align: center; font-size: 11px; }
+    .industry-layout { display: grid; grid-template-columns: 250px 1fr; gap: 24px; margin-top: 17px; }
+    .industry-list { display: grid; gap: 7px; align-content: start; }
+    .industry-button { display: grid; grid-template-columns: 9px 1fr auto; align-items: center; gap: 9px; width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px; background: transparent; text-align: left; cursor: pointer; transition: .18s; }
+    .industry-button:hover { background: #f7f9f6; }
+    .industry-button.selected { border-color: #dce8df; background: #f1f6f2; }
+    .industry-name { font-size: 12px; font-weight: 620; }
+    .industry-share { color: #77827a; font-size: 11px; font-weight: 650; }
+    .industry-detail { min-height: 184px; padding: 17px 19px; border: 1px solid #edf0eb; border-radius: 13px; background: #fcfdfb; }
+    .industry-detail-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .industry-detail-title { margin: 0; font-size: 15px; font-weight: 720; }
+    .growth { padding: 5px 8px; border-radius: 7px; color: #34734f; background: #eaf4ed; font-size: 10px; font-weight: 700; }
+    .growth.down { color: #a46747; background: #fbf0e8; }
+    .industry-description { margin: 12px 0 14px; color: #737f76; font-size: 12px; line-height: 1.8; }
+    .companies-label { margin-bottom: 8px; color: #9aa39c; font-size: 10px; }
+    .companies { display: flex; flex-wrap: wrap; gap: 7px; }
+    .company { padding: 6px 9px; border: 1px solid #e9ede7; border-radius: 7px; color: #57635b; background: white; font-size: 10px; }
+    .company small { margin-left: 5px; color: #9aa39c; font-size: 9px; }
+    .ai-panel { position: relative; overflow: hidden; margin: 16px 0 30px; padding: 23px 25px 22px; border: 1px solid #dfe9e1; border-radius: 17px; background: linear-gradient(115deg, #f0f6f1 0%, #fbfcf9 62%, #f4f6ef 100%); }
+    .ai-panel::after { position: absolute; top: -80px; right: -42px; width: 210px; height: 210px; border: 1px solid rgba(87,133,103,.09); border-radius: 50%; box-shadow: 0 0 0 24px rgba(87,133,103,.025), 0 0 0 48px rgba(87,133,103,.02); content: ""; pointer-events: none; }
+    .ai-head { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .ai-title-wrap { display: flex; align-items: center; gap: 11px; }
+    .ai-icon { display: grid; width: 35px; height: 35px; place-items: center; border-radius: 11px; color: white; background: var(--green); }
+    .ai-icon svg { width: 17px; height: 17px; }
+    .ai-title { margin: 0; font-size: 15px; font-weight: 740; letter-spacing: -.025em; }
+    .ai-subtitle { margin-top: 4px; color: #87928a; font-size: 10px; }
+    .analyze-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+    .analyze-button svg { width: 13px; height: 13px; }
+    .analysis-content { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 20px 0 0 46px; }
+    .analysis-zone { min-width: 0; padding: 15px 16px; border: 1px solid rgba(102, 137, 111, .16); border-radius: 13px; background: rgba(255, 255, 255, .62); }
+    .ai-zone { background: rgba(236, 245, 238, .82); }
+    .analysis-zone-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 11px; }
+    .zone-label { display: inline-flex; align-items: center; gap: 6px; color: #205a47; font-size: 11px; font-weight: 750; }
+    .zone-label::before { width: 6px; height: 6px; border-radius: 50%; background: #54a074; content: ""; }
+    .analysis-zone-meta { margin-top: 4px; color: #87928a; font-size: 9px; line-height: 1.5; }
+    .data-growth { display: flex; align-items: baseline; gap: 8px; margin: 2px 0 7px; }
+    .data-growth strong { color: var(--green); font-size: 23px; font-weight: 760; letter-spacing: -.045em; }
+    .data-growth span { color: #7b877e; font-size: 10px; }
+    .data-section-title { margin: 13px 0 7px; color: #55635a; font-size: 10px; font-weight: 720; }
+    .data-section-title:first-child { margin-top: 0; }
+    .data-points { display: grid; gap: 6px; }
+    .data-point { display: grid; grid-template-columns: 7px 1fr; gap: 7px; color: #68766c; font-size: 10px; line-height: 1.6; }
+    .data-point::before { width: 5px; height: 5px; margin-top: 5px; border-radius: 50%; background: #77a487; content: ""; }
+    .analysis-summary { color: #536158; font-size: 12px; line-height: 1.9; }
+    .analysis-summary strong { color: #294c38; font-weight: 720; }
+    .analysis-extra { margin-top: 10px; color: #77837b; font-size: 10px; line-height: 1.65; }
+    .trend-list { display: grid; gap: 10px; }
+    .trend-item { display: grid; grid-template-columns: 8px 1fr; gap: 9px; color: #667269; font-size: 11px; line-height: 1.65; }
+    .trend-bullet { width: 6px; height: 6px; margin-top: 5px; border-radius: 50%; background: #6e9a79; }
+    .trend-item strong { color: #334c3a; }
+    .analysis-sources { padding-top: 9px; border-top: 1px solid rgba(95, 126, 103, .13); color: #7d8b81; font-size: 9px; line-height: 1.7; }
+    .analysis-sources a { display: block; margin-top: 4px; color: #286b50; text-decoration: underline; text-underline-offset: 2px; }
+    .analysis-error { color: #815f4b; }
+    .ai-foot { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; margin: 17px 0 0 46px; color: #a0aaa2; font-size: 9px; }
+    .ai-foot svg { flex: none; width: 12px; height: 12px; }
+    .footer { padding: 0 0 25px; color: #a0a9a1; text-align: center; font-size: 10px; }
+    .footer span { color: #718078; }
+    .loading { opacity: .65; pointer-events: none; }
+    .status { min-height: 16px; margin: 6px 2px 0; color: #ac614d; font-size: 11px; }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 36px, 600px); }
+      .intro { display: block; padding-top: 30px; }
+      .search { width: 100%; margin-top: 20px; }
+      .overview { grid-template-columns: 1fr; }
+      .snapshot-panel { min-height: 240px; }
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 10px; }
+      .comparison-toolbar { align-items: stretch; flex-direction: column; }
+      .comparison-form { width: 100%; }
+      .comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .industry-layout { grid-template-columns: 1fr; gap: 12px; }
+      .industry-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .analysis-content { grid-template-columns: 1fr; gap: 11px; }
+    }
+    @media (max-width: 450px) {
+      .shell { width: calc(100% - 28px); }
+      .topbar { height: 65px; }
+      .top-note { font-size: 10px; }
+      .brand-sub { display: none; }
+      .intro { padding-top: 26px; }
+      .subtitle { max-width: 310px; }
+      .city-row { gap: 6px; overflow-x: auto; padding-bottom: 3px; }
+      .city-chip { flex: none; }
+      .economy-panel, .snapshot-panel, .industry-panel { padding: 18px 16px; }
+      .comparison-panel { padding: 18px 16px; }
+      .comparison-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .chart-area { justify-content: space-around; gap: 15px; min-height: 220px; }
+      .donut-wrap { width: 154px; height: 154px; }
+      .donut-hole { inset: 20px; }
+      .donut-city { max-width: 100px; font-size: 16px; }
+      .legend { min-width: 128px; gap: 11px; }
+      .legend-item { gap: 6px; font-size: 10px; }
+      .industry-panel { padding-bottom: 16px; }
+      .industry-list { gap: 4px; }
+      .industry-button { grid-template-columns: 8px 1fr auto; gap: 6px; padding: 9px 7px; }
+      .industry-name, .industry-share { font-size: 10px; }
+      .industry-detail { padding: 15px 13px; }
+      .ai-panel { padding: 18px 15px; }
+      .ai-head { align-items: flex-start; }
+      .analyze-button { padding: 0 10px; font-size: 10px; }
+      .analysis-content, .ai-foot { margin-left: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="shell" id="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m0 14h16M7 15l4-5 3 2 5-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="5" r="1.4" fill="currentColor"/></svg></span>城势<span class="brand-sub">CITYSCOPE</span></div>
+      <div class="top-note"><span class="live-dot"></span>城市产业观察 · 全球视野</div>
+    </header>
+
+    <section class="intro">
+      <div><div class="eyebrow">CITY ECONOMY, IN PERSPECTIVE</div><h1>看见一座城市的产业脉搏</h1><p class="subtitle">从产业结构到企业生态，用数据与 AI 洞察城市经济的下一步。</p></div>
+      <form class="search" id="search-form" role="search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input id="city-input" type="search" placeholder="搜索城市，如纽约、东京、上海" aria-label="搜索城市" autocomplete="off" list="city-options">
+        <button type="submit">探索城市</button>
+      </form>
+    </section>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <div class="city-row" aria-label="热门城市"><span class="city-label">热门城市</span><button class="city-chip active" data-city="new-york">纽约</button><button class="city-chip" data-city="shanghai">上海</button><button class="city-chip" data-city="beijing">北京</button><button class="city-chip" data-city="tokyo">东京</button><button class="city-chip" data-city="london">伦敦</button><button class="city-chip" data-city="shenzhen">深圳</button><button class="city-chip" data-city="guangzhou">广州</button><button class="city-chip" data-city="chengdu">成都</button><button class="city-chip" data-city="singapore">新加坡</button><button class="city-chip" data-city="seoul">首尔</button><button class="city-chip" data-city="paris">巴黎</button><button class="city-chip" data-city="san-francisco">旧金山</button><span class="city-label" id="city-count"></span></div>
+    <div class="notice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>全球城市边界、统计年度与指标口径不完全一致。名义 GDP 体量为参考估算，产业占比与企业示例仍是演示数据；下方资料逐条注明年份、口径及来源，不同指标不宜直接横向排名。</div>
+
+    <section class="overview" aria-label="城市经济概览">
+      <article class="panel economy-panel">
+        <div class="panel-head"><div><h2 class="panel-title">产业结构</h2><div class="panel-subtitle">主要行业占城市经济活动的比例</div></div><span class="year-tag">结构占比 · 示例</span></div>
+        <div class="chart-area">
+          <div class="donut-wrap" role="img" id="chart" aria-label="纽约产业结构饼图"><div class="donut" id="donut"></div><div class="donut-hole"><div class="donut-city" id="chart-city">纽约</div><div class="donut-caption">产业结构占比</div></div></div>
+          <div class="legend" id="legend"></div>
+        </div>
+      </article>
+      <article class="panel snapshot-panel">
+        <div class="panel-head"><div><h2 class="panel-title">城市名片</h2><div class="panel-subtitle">一眼读懂城市经济体量</div></div><span class="year-tag" id="city-region">美国 · 东北部</span></div>
+        <div class="city-heading"><div><h2 class="city-name" id="city-name">纽约</h2><div class="city-meta" id="city-meta">纽约州 · 全球金融与商业中心</div></div><div class="city-stamp" id="city-stamp">NY</div></div>
+        <div class="metric-grid">
+          <div class="metric"><div class="metric-label">都会区 GDP · 名义美元</div><div class="metric-value" id="gdp">$1.8<span>万亿美元</span></div></div>
+          <div class="metric"><div class="metric-label">GDP 参考年份</div><div class="metric-value" id="gdp-year">2023<span>估算参考值</span></div></div>
+          <div class="metric"><div class="metric-label" id="growth-label">GDP 增长率</div><div class="metric-value" id="growth-rate">待查询<span>年度同比</span></div></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel comparison-panel" aria-labelledby="comparison-heading">
+      <div class="panel-head"><div><h2 class="panel-title" id="comparison-heading">城市发展横向对比</h2><div class="panel-subtitle">比较都会区经济体量，最多同时查看三座城市</div></div><span class="year-tag" id="comparison-count">2 / 3 座城市</span></div>
+      <div class="comparison-toolbar">
+        <p class="comparison-note">条形长度按当前对比组中的最高 GDP 参考值计算。都会区边界和统计口径因地区而异，数值仅供参考。</p>
+        <form class="comparison-form" id="comparison-form">
+          <input id="comparison-input" type="search" placeholder="输入城市名，中英文均可" aria-label="添加要对比的城市" autocomplete="off" list="city-options">
+          <datalist id="city-options"></datalist>
+          <button id="comparison-add-button" type="submit">加入对比</button>
+        </form>
+      </div>
+      <div class="comparison-status" id="comparison-status" role="status" aria-live="polite"></div>
+      <div class="comparison-grid" id="comparison-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="panel industry-panel" aria-labelledby="industry-heading">
+      <div class="panel-head"><div><h2 class="panel-title" id="industry-heading">产业与代表企业</h2><div class="panel-subtitle">选择一个行业，查看代表企业、规模与发展概况</div></div><span class="year-tag">点击行业切换</span></div>
+      <div class="industry-layout"><div class="industry-list" id="industry-list" role="list"></div><div class="industry-detail" id="industry-detail" aria-live="polite"></div></div>
+    </section>
+
+    <section class="ai-panel" aria-labelledby="ai-heading">
+      <div class="ai-head">
+        <div class="ai-title-wrap"><div class="ai-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 14 9l5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2 2-5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z" fill="currentColor"/></svg></div><div><h2 class="ai-title" id="ai-heading">城市发展评估</h2><div class="ai-subtitle">实时 AI 与现有资料并列展示</div></div></div>
+        <button class="analyze-button" id="analyze-button" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-3M4 4v4h4m-4 5a8 8 0 0 0 14.9 3M20 20v-4h-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="analyze-label">生成本机 AI 评估</span></button>
+      </div>
+      <div class="analysis-content" id="analysis-content">
+        <article class="analysis-zone ai-zone" aria-labelledby="ai-zone-heading">
+          <div class="analysis-zone-head"><div><span class="zone-label" id="ai-zone-heading">实时 AI</span><div class="analysis-zone-meta" id="analysis-caption">正在读取本地资料…</div></div></div>
+          <div class="analysis-summary" id="ai-assessment" aria-live="polite"></div>
+        </article>
+        <article class="analysis-zone data-zone" aria-labelledby="data-zone-heading">
+          <div class="analysis-zone-head"><span class="zone-label" id="data-zone-heading">现有资料</span><span class="year-tag" id="data-year-tag">2025 年度</span></div>
+          <div id="existing-data"></div>
+        </article>
+      </div>
+      <div class="ai-foot"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>实时 AI 由本机 Ollama 模型根据现有资料生成，不联网检索；离线评估与来源链接无需模型即可查看。</div>
+    </section>
+    <footer class="footer"><span>城势 CityScope</span> · 离线城市经济探索工具 · 评估只描述已收录统计信息，不构成预测</footer>
+  </main>
+
+  <script>
+    const palette = ["#24614b", "#6aab88", "#e3a35e", "#93a7b9", "#c8d4ca"];
+    const cities = {
+      "new-york": {
+        names: ["纽约", "New York", "NYC"], english: "New York", region: "美国 · 东北部", meta: "纽约州 · 全球金融与商业中心", stamp: "NY", gdp: "$1.8", unit: "万亿美元",
+        industries: [
+          { name: "金融与保险", share: 32, growth: "+6.8%", direction: "up", description: "全球资本市场与资产管理高度集聚，金融科技、私募资本与财富管理持续扩张。", companies: [["摩根大通", "超大型"], ["高盛", "大型"], ["纳斯达克", "大型"]], trend: "金融科技与数字资产基础设施投资活跃，合规科技和实时支付服务有望继续受益。" },
+          { name: "科技与媒体", share: 25, growth: "+9.4%", direction: "up", description: "软件、广告科技、人工智能与数字媒体构成创新引擎，人才和风险资本保持吸引力。", companies: [["谷歌", "超大型"], ["彭博", "大型"], ["Spotify", "大型"]], trend: "生成式 AI 正加速进入广告、媒体和企业软件工作流，云基础设施与垂直应用机会突出。" },
+          { name: "医疗与生命科学", share: 18, growth: "+5.2%", direction: "up", description: "由大型医疗体系、研究型医院和生物医药企业共同支撑，临床研究资源丰富。", companies: [["Mount Sinai", "大型"], ["辉瑞", "超大型"], ["NYU Langone", "大型"]], trend: "生物技术融资趋于精选，临床数据、精准医疗与医疗服务数字化仍具中长期潜力。" },
+          { name: "专业服务", share: 15, growth: "+4.1%", direction: "up", description: "法律、咨询、会计与创意服务为总部经济及国际商业活动提供关键支持。", companies: [["德勤", "超大型"], ["安永", "超大型"], ["麦肯锡", "大型"]], trend: "企业降本需求推动咨询与法律服务引入自动化工具，专业服务与 AI 的融合速度提升。" },
+          { name: "制造与物流", share: 10, growth: "+1.7%", direction: "up", description: "制造业比重相对有限，主要集中于食品、设计制造、印刷及区域供应链节点。", companies: [["Estée Lauder", "大型"], ["Con Edison", "大型"], ["区域制造商", "中型"]], trend: "制造业保持小而专的城市特色，供应链韧性、清洁能源与本地化生产值得关注。" }
+        ]
+      },
+      "shanghai": {
+        names: ["上海", "Shanghai"], english: "Shanghai", region: "中国 · 华东", meta: "中国 · 国际金融与航运中心", stamp: "沪", gdp: "¥5.0", unit: "万亿元人民币",
+        industries: [
+          { name: "金融服务", share: 28, growth: "+6.2%", direction: "up", description: "金融市场、资产管理与跨境服务集聚，国际金融枢纽能级不断提升。", companies: [["中国工商银行", "超大型"], ["浦发银行", "大型"], ["陆家嘴集团", "大型"]], trend: "金融开放与数字化持续深化，财富管理、绿色金融和金融科技服务拥有增长空间。" },
+          { name: "先进制造", share: 25, growth: "+7.1%", direction: "up", description: "汽车、集成电路、生物医药和高端装备形成多元化制造产业集群。", companies: [["特斯拉上海", "大型"], ["上汽集团", "超大型"], ["中芯国际", "大型"]], trend: "新能源车与集成电路产业链协同增强，智能制造和高端零部件值得持续关注。" },
+          { name: "科技与信息", share: 20, growth: "+9.3%", direction: "up", description: "软件、人工智能、芯片设计与在线服务快速发展，创新企业密度持续提升。", companies: [["拼多多", "超大型"], ["携程", "大型"], ["哔哩哔哩", "大型"]], trend: "人工智能应用、云服务和工业软件正在打开新需求，技术商业化能力成为关键。" },
+          { name: "商贸与物流", share: 17, growth: "+5.0%", direction: "up", description: "依托港口、机场和消费市场，形成连接全球的贸易、零售和物流网络。", companies: [["上港集团", "大型"], ["京东物流", "大型"], ["百联集团", "大型"]], trend: "跨境电商与智慧物流推动供应链升级，港口数字化和即时零售值得关注。" },
+          { name: "专业与消费服务", share: 10, growth: "+4.4%", direction: "up", description: "会展、文创、专业服务与高品质消费共同构成城市服务业生态。", companies: [["携程集团", "大型"], ["上海国际会展", "大型"], ["光明食品", "大型"]], trend: "国际消费与体验经济带来复苏机会，服务业数字化及品牌出海是关注方向。" }
+        ]
+      },
+      "beijing": {
+        names: ["北京", "Beijing", "Peking"], english: "Beijing", region: "中国 · 华北", meta: "中国 · 科技创新与总部经济中心", stamp: "京", gdp: "¥4.4", unit: "万亿元人民币",
+        industries: [
+          { name: "科技与信息服务", share: 34, growth: "+10.2%", direction: "up", description: "软件、人工智能、互联网平台与信息服务构成首都经济核心增长动力。", companies: [["百度", "超大型"], ["字节跳动", "超大型"], ["小米集团", "大型"]], trend: "大模型应用、智能驾驶与企业云服务加快落地，技术创新和场景转化值得关注。" },
+          { name: "金融服务", share: 22, growth: "+5.8%", direction: "up", description: "金融总部、银行保险与科技金融资源丰富，服务全国市场与实体经济。", companies: [["中国银行", "超大型"], ["中国人寿", "超大型"], ["京东科技", "大型"]], trend: "金融机构数字化转型深化，金融科技、绿色金融和财富管理需求稳步增长。" },
+          { name: "专业与商务服务", share: 18, growth: "+4.7%", direction: "up", description: "总部管理、咨询、法律与专业服务支撑大型组织及国际商务活动。", companies: [["中国中信", "超大型"], ["普华永道", "大型"], ["中金公司", "大型"]], trend: "企业全球化与合规管理需求提升，数据咨询和专业服务智能化转型提速。" },
+          { name: "文化与创意", share: 15, growth: "+6.1%", direction: "up", description: "出版、影视、游戏与数字内容产业融合发展，文化资源优势持续释放。", companies: [["爱奇艺", "大型"], ["完美世界", "大型"], ["北京出版集团", "大型"]], trend: "短剧、游戏出海与 AI 内容工具扩展行业边界，优质 IP 和全球化运营更受重视。" },
+          { name: "先进制造与医药", share: 11, growth: "+3.8%", direction: "up", description: "医药健康、集成电路与智能装备构成知识密集型制造的重要板块。", companies: [["北方华创", "大型"], ["同仁堂", "大型"], ["联想集团", "超大型"]], trend: "创新药、高端芯片设备与医疗器械有望受政策和研发投入带动。" }
+        ]
+      },
+      "tokyo": {
+        names: ["东京", "Tokyo"], english: "Tokyo", region: "日本 · 关东", meta: "日本 · 金融、科技与商业中心", stamp: "TYO", gdp: "¥115", unit: "万亿日元",
+        industries: [
+          { name: "金融与保险", share: 27, growth: "+4.2%", direction: "up", description: "银行、证券和保险企业总部集聚，是日本资本市场与企业融资核心。", companies: [["三菱日联", "超大型"], ["野村证券", "大型"], ["东京海上", "大型"]], trend: "治理改革与资本效率提升带动金融服务升级，数字资产及财富管理受到关注。" },
+          { name: "科技与电子", share: 24, growth: "+7.3%", direction: "up", description: "电子、半导体、游戏与软件产业结合深厚，研发与全球品牌优势明显。", companies: [["索尼", "超大型"], ["任天堂", "大型"], ["软银集团", "超大型"]], trend: "半导体投资与游戏内容创新带来增长动能，AI 基础设施和机器人应用值得留意。" },
+          { name: "商业与零售", share: 20, growth: "+5.1%", direction: "up", description: "大型百货、国际品牌与餐饮旅游构成高度成熟的城市消费经济。", companies: [["伊势丹三越", "大型"], ["迅销", "超大型"], ["永旺", "超大型"]], trend: "入境旅游恢复持续拉动消费，体验型零售和高附加值服务表现值得观察。" },
+          { name: "专业服务", share: 17, growth: "+3.6%", direction: "up", description: "咨询、广告、设计与总部管理服务支持日本企业和国际业务拓展。", companies: [["电通", "大型"], ["普华永道日本", "大型"], ["Recruit", "大型"]], trend: "企业数字化和国际扩张需求提升，数据服务与人力科技保持发展空间。" },
+          { name: "制造与运输", share: 12, growth: "+2.8%", direction: "up", description: "汽车、精密设备与城市交通网络支撑首都圈产业链和物流效率。", companies: [["本田", "超大型"], ["东京地铁", "大型"], ["大日本印刷", "大型"]], trend: "电动化与供应链重构持续影响制造业，智能交通和低碳技术加快渗透。" }
+        ]
+      },
+      "london": {
+        names: ["伦敦", "London"], english: "London", region: "英国 · 英格兰", meta: "英国 · 全球金融与创意产业中心", stamp: "LDN", gdp: "£0.6", unit: "万亿英镑",
+        industries: [
+          { name: "金融与保险", share: 31, growth: "+5.4%", direction: "up", description: "国际银行、保险、交易与资产管理机构云集，跨境金融网络成熟。", companies: [["汇丰银行", "超大型"], ["巴克莱", "大型"], ["劳合社", "大型"]], trend: "金融科技、可持续金融和国际财富管理是核心看点，监管适应能力将影响行业竞争力。" },
+          { name: "专业服务", share: 24, growth: "+4.8%", direction: "up", description: "法律、咨询、会计和广告等高附加值服务拥有全球客户与人才网络。", companies: [["安永", "超大型"], ["德勤", "超大型"], ["Freshfields", "大型"]], trend: "跨境合规和企业转型项目带来需求，生成式 AI 正改变知识服务交付方式。" },
+          { name: "科技与创意", share: 20, growth: "+8.7%", direction: "up", description: "金融科技、软件、游戏、设计和数字媒体形成欧洲领先的创新生态。", companies: [["Revolut", "大型"], ["DeepMind", "大型"], ["ARM", "大型"]], trend: "AI、金融科技与气候科技创业仍具吸引力，人才供给与后续融资是关键变量。" },
+          { name: "房地产与建设", share: 15, growth: "+2.3%", direction: "up", description: "商业地产、住宅开发和基础设施建设深刻影响城市就业与投资结构。", companies: [["Landsec", "大型"], ["British Land", "大型"], ["Berkeley Group", "大型"]], trend: "办公空间需求结构变化推动资产更新，能源改造和可持续建筑投入增加。" },
+          { name: "旅游与文化", share: 10, growth: "+5.6%", direction: "up", description: "旅游、演艺、博物馆和国际会展构成伦敦重要的城市服务产业。", companies: [["英国航空", "超大型"], ["Live Nation UK", "大型"], ["Tate", "大型"]], trend: "国际游客和大型活动支撑行业复苏，文化体验与目的地消费仍有增长潜力。" }
+        ]
+      },
+      "shenzhen": {
+        names: ["深圳", "Shenzhen"], english: "Shenzhen", region: "中国 · 华南", meta: "中国 · 硬科技与先进制造创新高地", stamp: "深", gdp: "¥3.5", unit: "万亿元人民币",
+        industries: [
+          { name: "先进制造", share: 30, growth: "+8.4%", direction: "up", description: "电子信息、新能源汽车、智能装备与精密制造形成强大的产业集群。", companies: [["比亚迪", "超大型"], ["大疆创新", "大型"], ["立讯精密", "大型"]], trend: "新能源汽车、机器人和智能终端产业链协同加深，高端制造升级带来新机遇。" },
+          { name: "科技与软件", share: 28, growth: "+10.1%", direction: "up", description: "互联网平台、通信设备、软件与人工智能研发紧密连接制造业场景。", companies: [["腾讯", "超大型"], ["华为", "超大型"], ["中兴通讯", "大型"]], trend: "AI 算力、工业软件与智能终端应用扩张，软硬件一体化创新优势突出。" },
+          { name: "金融服务", share: 17, growth: "+5.3%", direction: "up", description: "银行、证券、创投与科技金融服务科技企业和大湾区产业发展。", companies: [["平安集团", "超大型"], ["招商银行", "超大型"], ["深创投", "大型"]], trend: "创投市场更加关注商业化与现金流，科技金融和跨境服务仍具结构性机会。" },
+          { name: "商贸与物流", share: 15, growth: "+5.7%", direction: "up", description: "国际贸易、港口物流及跨境电商连接全球供应链与广阔消费市场。", companies: [["顺丰控股", "超大型"], ["深圳港集团", "大型"], ["华润万家", "大型"]], trend: "跨境电商和智能物流提升供应链效率，海外仓与品牌出海成为增长方向。" },
+          { name: "专业与生活服务", share: 10, growth: "+4.2%", direction: "up", description: "设计、会展、研发服务与现代生活服务支撑创新企业和高密度人口。", companies: [["华侨城", "大型"], ["招商蛇口", "大型"], ["深圳人才集团", "大型"]], trend: "创新设计、研发外包和城市消费服务随产业升级同步发展。" }
+        ]
+      },
+      "guangzhou": {
+        names: ["广州", "Guangzhou", "Canton"], english: "Guangzhou", region: "中国 · 华南", meta: "中国 · 商贸枢纽与汽车制造重镇", stamp: "穗", gdp: "¥3.0", unit: "万亿元人民币",
+        industries: [
+          { name: "商贸与物流", share: 28, growth: "+5.8%", direction: "up", description: "专业市场、会展、港口和航空物流连接国内外供应链，商贸基础深厚。", companies: [["广汽集团", "超大型"], ["南方航空", "超大型"], ["广百股份", "大型"]], trend: "跨境电商、会展经济与供应链数字化持续升级，区域枢纽服务能力值得关注。" },
+          { name: "先进制造", share: 26, growth: "+7.2%", direction: "up", description: "汽车、电子信息、生物医药和智能装备形成多层次制造产业体系。", companies: [["广汽集团", "超大型"], ["小鹏汽车", "大型"], ["视源股份", "大型"]], trend: "新能源汽车与智能网联汽车产业链加速转型，智能装备和工业升级带来新需求。" },
+          { name: "金融服务", share: 18, growth: "+5.4%", direction: "up", description: "银行、保险、租赁与金融科技服务本地产业和粤港澳大湾区企业。", companies: [["广发证券", "大型"], ["广州农商银行", "大型"], ["越秀资本", "大型"]], trend: "面向先进制造和外贸企业的金融服务、绿色金融与跨境结算具备发展空间。" },
+          { name: "科技与信息", share: 16, growth: "+9.1%", direction: "up", description: "互联网平台、软件、人工智能与数字内容产业快速发展。", companies: [["唯品会", "大型"], ["网易", "超大型"], ["小马智行", "大型"]], trend: "人工智能、自动驾驶和产业互联网加快商业化，应用场景与技术融合是关键。" },
+          { name: "消费与专业服务", share: 12, growth: "+4.6%", direction: "up", description: "餐饮、零售、文旅及商务服务共同构成活跃的城市消费生态。", companies: [["广百股份", "大型"], ["岭南集团", "大型"], ["名创优品", "大型"]], trend: "文旅消费、国潮品牌和体验式零售有望受益于消费市场持续升级。" }
+        ]
+      },
+      "chengdu": {
+        names: ["成都", "Chengdu"], english: "Chengdu", region: "中国 · 西南", meta: "中国 · 西部科创与消费中心", stamp: "蓉", gdp: "¥2.4", unit: "万亿元人民币",
+        industries: [
+          { name: "电子信息制造", share: 27, growth: "+8.0%", direction: "up", description: "集成电路、智能终端和电子元器件构成重要的先进制造产业集群。", companies: [["京东方", "超大型"], ["英特尔成都", "大型"], ["通威股份", "大型"]], trend: "集成电路配套与智能终端需求带动产业升级，绿色能源制造协同值得关注。" },
+          { name: "科技与软件", share: 24, growth: "+10.3%", direction: "up", description: "软件研发、游戏、人工智能和数字服务在西部保持较强集聚优势。", companies: [["腾讯成都", "大型"], ["天府软件园企业", "中型"], ["极米科技", "大型"]], trend: "游戏出海、AI 软件与企业数字化服务持续扩展，研发人才和创新企业生态是优势。" },
+          { name: "商贸与消费", share: 21, growth: "+6.0%", direction: "up", description: "区域商业中心、餐饮、零售与文旅消费活跃，消费品牌影响力突出。", companies: [["新希望集团", "超大型"], ["红旗连锁", "大型"], ["通威集团", "超大型"]], trend: "文旅体验、首店经济与特色消费品牌发展较快，消费活力和城市吸引力相互带动。" },
+          { name: "金融服务", share: 16, growth: "+5.1%", direction: "up", description: "银行、保险和产业投资机构服务西部企业，区域金融中心功能持续增强。", companies: [["四川银行", "大型"], ["成都银行", "大型"], ["川发展", "大型"]], trend: "科技金融、绿色金融和面向西部企业的产业投资服务值得持续观察。" },
+          { name: "航空与物流", share: 12, growth: "+5.7%", direction: "up", description: "航空枢纽、铁路港与综合物流连接国内外市场，支撑电子与消费品贸易。", companies: [["四川航空", "大型"], ["成都国际铁路港", "大型"], ["新希望物流", "大型"]], trend: "国际航线和跨境铁路网络完善有望提升枢纽能级，航空物流和供应链服务受益。" }
+        ]
+      },
+      "singapore": {
+        names: ["新加坡", "Singapore"], english: "Singapore", region: "东南亚 · 城邦", meta: "全球贸易、金融与区域总部中心", stamp: "SG", gdp: "S$0.7", unit: "万亿新加坡元",
+        industries: [
+          { name: "金融与保险", share: 30, growth: "+6.1%", direction: "up", description: "国际银行、资产管理、保险与金融科技机构密集，是亚洲重要金融枢纽。", companies: [["星展银行", "超大型"], ["华侨银行", "超大型"], ["大华银行", "超大型"]], trend: "财富管理、数字金融和跨境支付需求稳健，金融创新与区域互联互通是看点。" },
+          { name: "贸易与物流", share: 24, growth: "+5.4%", direction: "up", description: "港口、航空货运和大宗商品贸易连接全球市场，供应链服务高度成熟。", companies: [["新加坡港务集团", "超大型"], ["新加坡航空", "超大型"], ["吉宝企业", "大型"]], trend: "供应链多元化与港口自动化持续推进，绿色航运和高附加值物流受到关注。" },
+          { name: "科技与数字服务", share: 19, growth: "+9.7%", direction: "up", description: "云计算、网络安全、金融科技和区域数字平台吸引国际企业布局。", companies: [["Sea Limited", "超大型"], ["Grab", "大型"], ["字节跳动新加坡", "大型"]], trend: "AI 云服务、网络安全和数字贸易基础设施投入加速，区域总部需求支撑创新。" },
+          { name: "制造与生物医药", share: 16, growth: "+6.8%", direction: "up", description: "半导体、精密工程、化学品和生物制药构成高附加值制造基础。", companies: [["美光科技", "超大型"], ["赛默飞世尔", "超大型"], ["胜科工业", "大型"]], trend: "半导体与生物医药供应链持续升级，先进制造与研发生产一体化优势明显。" },
+          { name: "旅游与专业服务", share: 11, growth: "+5.2%", direction: "up", description: "会展、酒店、教育和专业商务服务承接国际客流及区域企业需求。", companies: [["嘉佩乐酒店", "大型"], ["新加坡会展", "大型"], ["莱佛士酒店", "大型"]], trend: "大型活动、商务旅行和体验型旅游推动服务业恢复，区域人才与教育服务仍有需求。" }
+        ]
+      },
+      "seoul": {
+        names: ["首尔", "Seoul"], english: "Seoul", region: "韩国 · 首都圈", meta: "韩国 · 科技、文化与商业中心", stamp: "SEL", gdp: "₩550", unit: "万亿韩元",
+        industries: [
+          { name: "科技与电子", share: 30, growth: "+8.6%", direction: "up", description: "半导体、电子、互联网平台与通信技术构成首都圈创新产业核心。", companies: [["三星电子", "超大型"], ["SK 海力士", "超大型"], ["Naver", "大型"]], trend: "AI 服务器带动存储芯片需求，先进制程、云平台与数字服务持续扩张。" },
+          { name: "金融与保险", share: 22, growth: "+4.9%", direction: "up", description: "证券、银行、保险和金融科技机构为企业融资及国际资本活动提供支持。", companies: [["KB 金融集团", "超大型"], ["新韩金融集团", "超大型"], ["未来资产", "大型"]], trend: "资本市场改革和数字金融推动行业升级，财富管理与跨境金融服务值得关注。" },
+          { name: "制造与汽车", share: 20, growth: "+6.5%", direction: "up", description: "汽车、消费电子和高端零部件产业链与首都圈研发体系紧密连接。", companies: [["现代汽车", "超大型"], ["LG 电子", "超大型"], ["起亚", "超大型"]], trend: "电动汽车、智能出行和自动化生产线转型加快，供应链技术创新是主要动力。" },
+          { name: "文化与内容", share: 16, growth: "+9.2%", direction: "up", description: "影视、音乐、游戏和时尚内容通过全球发行形成显著国际影响力。", companies: [["HYBE", "大型"], ["CJ ENM", "大型"], ["Kakao Entertainment", "大型"]], trend: "流媒体、游戏与音乐版权全球化推动内容出海，IP 长线运营和粉丝经济持续演进。" },
+          { name: "商业与专业服务", share: 12, growth: "+4.3%", direction: "up", description: "零售、广告、咨询和总部服务连接本地消费者与国际品牌网络。", companies: [["乐天集团", "超大型"], ["新世界集团", "大型"], ["LG CNS", "大型"]], trend: "全渠道零售和企业数字化转型持续推进，品牌体验与智能服务值得关注。" }
+        ]
+      },
+      "paris": {
+        names: ["巴黎", "Paris"], english: "Paris", region: "法国 · 法兰西岛", meta: "欧洲 · 金融、奢侈品与创意产业中心", stamp: "PAR", gdp: "€0.9", unit: "万亿欧元",
+        industries: [
+          { name: "专业与金融服务", share: 28, growth: "+5.2%", direction: "up", description: "银行、咨询、法律与总部经济资源集聚，服务法国及欧洲市场。", companies: [["法国巴黎银行", "超大型"], ["安盛集团", "超大型"], ["凯捷", "大型"]], trend: "可持续金融、企业转型与数字化服务带来结构性机会，欧洲市场连接能力突出。" },
+          { name: "商业与奢侈品", share: 25, growth: "+6.3%", direction: "up", description: "奢侈品、时尚、零售与品牌管理形成世界级消费和创意产业生态。", companies: [["LVMH", "超大型"], ["开云集团", "超大型"], ["欧莱雅", "超大型"]], trend: "高端消费与全球旅游需求影响行业表现，品牌数字化、体验零售和循环设计持续升温。" },
+          { name: "旅游与文化", share: 19, growth: "+6.8%", direction: "up", description: "博物馆、演艺、会展和国际旅游构成城市服务经济的重要支柱。", companies: [["巴黎机场集团", "大型"], ["雅高酒店", "大型"], ["巴黎迪士尼", "大型"]], trend: "国际客流和大型文化活动支撑增长，文旅体验升级与城市基础设施是关注重点。" },
+          { name: "科技与创新", share: 16, growth: "+9.0%", direction: "up", description: "人工智能、软件、生物科技与创业投资推动欧洲创新生态发展。", companies: [["达梭系统", "大型"], ["Doctolib", "大型"], ["Mistral AI", "大型"]], trend: "AI 初创企业、云计算与绿色科技获得关注，科研成果商业化和国际人才竞争关键。" },
+          { name: "交通与制造", share: 12, growth: "+3.9%", direction: "up", description: "航空航天、轨道交通、汽车及城市基础设施支撑区域产业网络。", companies: [["赛峰集团", "超大型"], ["阿尔斯通", "大型"], ["空客", "超大型"]], trend: "航空航天和轨道交通绿色转型持续推进，智能出行及低碳技术投入增长。" }
+        ]
+      },
+      "san-francisco": {
+        names: ["旧金山", "San Francisco", "SF"], english: "San Francisco", region: "美国 · 加利福尼亚州", meta: "湾区 · 全球科技创新与风险投资中心", stamp: "SF", gdp: "$0.7", unit: "万亿美元",
+        industries: [
+          { name: "科技与软件", share: 36, growth: "+10.5%", direction: "up", description: "软件、云计算、人工智能和平台企业高度集聚，创新创业生态成熟。", companies: [["Salesforce", "超大型"], ["Uber", "超大型"], ["OpenAI", "大型"]], trend: "生成式 AI、云基础设施和企业软件需求强劲，商业化效率与人才竞争值得关注。" },
+          { name: "金融与创投", share: 22, growth: "+6.2%", direction: "up", description: "风险投资、资产管理、金融科技与专业投资服务为创新企业提供资本支持。", companies: [["富国银行", "超大型"], ["Stripe", "大型"], ["Andreessen Horowitz", "大型"]], trend: "创投资金更重视可持续商业模式，AI、气候科技和金融科技仍是重点方向。" },
+          { name: "专业服务", share: 17, growth: "+4.5%", direction: "up", description: "咨询、法律、设计与企业管理服务支撑湾区科技及国际业务发展。", companies: [["德勤", "超大型"], ["Wilson Sonsini", "大型"], ["IDEO", "大型"]], trend: "科技企业全球化与合规需求推动专业服务演进，AI 工具提升知识工作效率。" },
+          { name: "生物科技与医疗", share: 15, growth: "+5.8%", direction: "up", description: "生物技术、医疗研究和数字健康连接顶尖科研机构与创新企业。", companies: [["吉利德科学", "超大型"], ["Genentech", "超大型"], ["UCSF Health", "大型"]], trend: "创新疗法、精准医疗与生物数据应用长期受关注，融资环境和临床进展影响行业节奏。" },
+          { name: "旅游与商业服务", share: 10, growth: "+3.7%", direction: "up", description: "旅游、酒店、餐饮与商业地产服务构成多元化城市消费经济。", companies: [["金门旅游集团", "大型"], ["DoorDash", "大型"], ["金门大桥管理局", "大型"]], trend: "会议旅游和本地消费复苏带来机会，城市更新与商业空间转型仍在持续。" }
+        ]
+      }
+    };
+
+    const gdpReference = {
+      "new-york": 2100, "shanghai": 720, "beijing": 680, "tokyo": 2100, "london": 1100, "shenzhen": 520,
+      "guangzhou": 430, "chengdu": 360, "singapore": 500, "seoul": 950, "paris": 1000, "san-francisco": 780
+    };
+    const metroIndex = [
+      ["los-angeles", "洛杉矶", ["Los Angeles", "LA"], "美国 · 加利福尼亚州", 1300, "全球娱乐、贸易与科技中心", "US"],
+      ["chicago", "芝加哥", ["Chicago"], "美国 · 伊利诺伊州", 900, "金融、运输与先进制造中心", "US"],
+      ["washington-dc", "华盛顿", ["Washington", "Washington DC", "Washington, D.C."], "美国 · 哥伦比亚特区", 700, "联邦政府、专业服务与科技中心", "US"],
+      ["dallas", "达拉斯", ["Dallas", "Dallas–Fort Worth", "DFW"], "美国 · 得克萨斯州", 700, "企业总部、金融与科技中心", "US"],
+      ["houston", "休斯敦", ["Houston"], "美国 · 得克萨斯州", 650, "能源、医疗与航空航天中心", "US"],
+      ["boston", "波士顿", ["Boston"], "美国 · 马萨诸塞州", 600, "生物科技、教育与金融中心", "US"],
+      ["atlanta", "亚特兰大", ["Atlanta"], "美国 · 佐治亚州", 550, "物流、媒体与企业总部中心", "US"],
+      ["miami", "迈阿密", ["Miami"], "美国 · 佛罗里达州", 500, "国际贸易、旅游与金融中心", "US"],
+      ["philadelphia", "费城", ["Philadelphia", "Philly"], "美国 · 宾夕法尼亚州", 500, "医疗、教育与金融中心", "US"],
+      ["seattle", "西雅图", ["Seattle"], "美国 · 华盛顿州", 500, "云计算、航空航天与贸易中心", "US"],
+      ["phoenix", "凤凰城", ["Phoenix"], "美国 · 亚利桑那州", 400, "半导体、制造与商业服务中心", "US"],
+      ["minneapolis", "明尼阿波利斯", ["Minneapolis", "Twin Cities"], "美国 · 明尼苏达州", 350, "医疗、金融与消费品中心", "US"],
+      ["detroit", "底特律", ["Detroit"], "美国 · 密歇根州", 330, "汽车制造与移动出行中心", "US"],
+      ["san-diego", "圣迭戈", ["San Diego"], "美国 · 加利福尼亚州", 320, "生物科技、国防与旅游中心", "US"],
+      ["denver", "丹佛", ["Denver"], "美国 · 科罗拉多州", 300, "科技、能源与商务服务中心", "US"],
+      ["tampa", "坦帕", ["Tampa", "Tampa Bay"], "美国 · 佛罗里达州", 230, "金融、医疗与旅游中心", "US"],
+      ["baltimore", "巴尔的摩", ["Baltimore"], "美国 · 马里兰州", 220, "医疗、港口物流与科研中心", "US"],
+      ["charlotte", "夏洛特", ["Charlotte"], "美国 · 北卡罗来纳州", 220, "银行、金融科技与能源中心", "US"],
+      ["st-louis", "圣路易斯", ["St. Louis", "Saint Louis"], "美国 · 密苏里州", 210, "医疗、制造与农业科技中心", "US"],
+      ["portland", "波特兰", ["Portland", "Portland, Oregon"], "美国 · 俄勒冈州", 200, "科技、运动品牌与绿色制造中心", "US"],
+      ["orlando", "奥兰多", ["Orlando"], "美国 · 佛罗里达州", 190, "旅游、航空航天与医疗中心", "US"],
+      ["san-antonio", "圣安东尼奥", ["San Antonio"], "美国 · 得克萨斯州", 180, "医疗、国防与商务服务中心", "US"],
+      ["austin", "奥斯汀", ["Austin"], "美国 · 得克萨斯州", 250, "科技、半导体与创新创业中心", "US"],
+      ["sacramento", "萨克拉门托", ["Sacramento"], "美国 · 加利福尼亚州", 180, "政府服务、医疗与科技中心", "US"],
+      ["pittsburgh", "匹兹堡", ["Pittsburgh"], "美国 · 宾夕法尼亚州", 170, "医疗、机器人与先进制造中心", "US"],
+      ["cincinnati", "辛辛那提", ["Cincinnati"], "美国 · 俄亥俄州", 170, "消费品、金融与制造中心", "US"],
+      ["indianapolis", "印第安纳波利斯", ["Indianapolis"], "美国 · 印第安纳州", 160, "生命科学、物流与制造中心", "US"],
+      ["cleveland", "克利夫兰", ["Cleveland"], "美国 · 俄亥俄州", 160, "医疗、制造与金融服务中心", "US"],
+      ["nashville", "纳什维尔", ["Nashville"], "美国 · 田纳西州", 160, "医疗、音乐与商务服务中心", "US"],
+      ["columbus", "哥伦布", ["Columbus", "Columbus, Ohio"], "美国 · 俄亥俄州", 160, "科技、保险与物流中心", "US"],
+      ["kansas-city", "堪萨斯城", ["Kansas City"], "美国 · 密苏里州", 150, "物流、农业科技与金融中心", "US"],
+      ["milwaukee", "密尔沃基", ["Milwaukee"], "美国 · 威斯康星州", 140, "制造、医疗与金融中心", "US"],
+      ["jacksonville", "杰克逊维尔", ["Jacksonville"], "美国 · 佛罗里达州", 130, "港口物流、金融与医疗中心", "US"],
+      ["madrid", "马德里", ["Madrid"], "西班牙 · 马德里自治区", 350, "金融、总部经济与商业中心", "EU"],
+      ["barcelona", "巴塞罗那", ["Barcelona"], "西班牙 · 加泰罗尼亚", 250, "旅游、设计与先进制造中心", "EU"],
+      ["munich", "慕尼黑", ["Munich", "München"], "德国 · 巴伐利亚州", 400, "汽车、保险与高端科技中心", "EU"],
+      ["frankfurt", "法兰克福", ["Frankfurt", "Frankfurt am Main"], "德国 · 黑森州", 300, "欧洲金融、交通与专业服务中心", "EU"],
+      ["amsterdam", "阿姆斯特丹", ["Amsterdam"], "荷兰 · 北荷兰省", 350, "金融、科技与国际贸易中心", "EU"],
+      ["milan", "米兰", ["Milan", "Milano"], "意大利 · 伦巴第大区", 300, "金融、时尚与工业设计中心", "EU"],
+      ["rome", "罗马", ["Rome", "Roma"], "意大利 · 拉齐奥大区", 200, "政府服务、旅游与文化产业中心", "EU"],
+      ["zurich", "苏黎世", ["Zurich", "Zürich"], "瑞士 · 苏黎世州", 200, "金融、保险与高端技术中心", "EU"],
+      ["brussels", "布鲁塞尔", ["Brussels", "Bruxelles"], "比利时 · 布鲁塞尔首都大区", 200, "国际机构、金融与专业服务中心", "EU"],
+      ["stockholm", "斯德哥尔摩", ["Stockholm"], "瑞典 · 斯德哥尔摩省", 200, "科技、金融与创新创业中心", "EU"],
+      ["copenhagen", "哥本哈根", ["Copenhagen", "København"], "丹麦 · 首都大区", 180, "生命科学、航运与绿色科技中心", "EU"],
+      ["dublin", "都柏林", ["Dublin"], "爱尔兰 · 伦斯特省", 180, "科技、金融与国际企业总部中心", "EU"],
+      ["vienna", "维也纳", ["Vienna", "Wien"], "奥地利 · 维也纳州", 200, "金融、生命科学与国际服务中心", "EU"],
+      ["hamburg", "汉堡", ["Hamburg"], "德国 · 汉堡州", 250, "港口物流、航空与媒体中心", "EU"],
+      ["warsaw", "华沙", ["Warsaw", "Warszawa"], "波兰 · 马佐夫舍省", 200, "金融、商业服务与科技中心", "EU"],
+      ["moscow", "莫斯科", ["Moscow", "Moskva"], "俄罗斯 · 中央联邦区", 600, "金融、科技与企业总部中心", "EU"],
+      ["istanbul", "伊斯坦布尔", ["Istanbul", "İstanbul"], "土耳其 · 马尔马拉地区", 350, "金融、贸易与制造中心", "EU"],
+      ["rotterdam", "鹿特丹", ["Rotterdam"], "荷兰 · 南荷兰省", 150, "港口物流、能源与工业中心", "EU"],
+      ["berlin", "柏林", ["Berlin"], "德国 · 柏林州", 200, "科技、创意与政府服务中心", "EU"],
+      ["ruhr", "鲁尔区", ["Ruhr", "Ruhrgebiet", "Ruhr area"], "德国 · 北莱茵-威斯特法伦州", 400, "工业、能源转型与商业服务中心", "EU"],
+      ["stuttgart", "斯图加特", ["Stuttgart"], "德国 · 巴登-符腾堡州", 180, "汽车、工程与高端制造中心", "EU"],
+      ["birmingham", "伯明翰", ["Birmingham"], "英国 · 西米德兰兹", 140, "制造、商务服务与物流中心", "EU"],
+      ["manchester", "曼彻斯特", ["Manchester", "Greater Manchester"], "英国 · 大曼彻斯特", 150, "媒体、科技与专业服务中心", "EU"],
+      ["lyon", "里昂", ["Lyon"], "法国 · 奥弗涅-罗讷-阿尔卑斯大区", 180, "生物医药、化工与商务服务中心", "EU"],
+      ["lisbon", "里斯本", ["Lisbon", "Lisboa"], "葡萄牙 · 里斯本大区", 130, "科技、旅游与国际商务中心", "EU"],
+      ["prague", "布拉格", ["Prague", "Praha"], "捷克 · 布拉格首都区", 120, "汽车、科技与商务服务中心", "EU"],
+      ["budapest", "布达佩斯", ["Budapest"], "匈牙利 · 佩斯州", 110, "制造、金融与共享服务中心", "EU"],
+      ["toronto", "多伦多", ["Toronto", "Greater Toronto Area", "GTA"], "加拿大 · 安大略省", 500, "金融、科技与北美总部中心", "AM"],
+      ["montreal", "蒙特利尔", ["Montreal", "Montréal"], "加拿大 · 魁北克省", 220, "航空航天、人工智能与文化中心", "AM"],
+      ["vancouver", "温哥华", ["Vancouver"], "加拿大 · 不列颠哥伦比亚省", 170, "贸易、科技与影视制作中心", "AM"],
+      ["calgary", "卡尔加里", ["Calgary"], "加拿大 · 阿尔伯塔省", 150, "能源、金融与专业服务中心", "AM"],
+      ["edmonton", "埃德蒙顿", ["Edmonton"], "加拿大 · 阿尔伯塔省", 120, "能源、教育与公共服务中心", "AM"],
+      ["sydney", "悉尼", ["Sydney"], "澳大利亚 · 新南威尔士州", 450, "金融、科技与亚太总部中心", "APAC"],
+      ["melbourne", "墨尔本", ["Melbourne"], "澳大利亚 · 维多利亚州", 350, "金融、教育、医疗与创意中心", "APAC"],
+      ["brisbane", "布里斯班", ["Brisbane"], "澳大利亚 · 昆士兰州", 190, "资源、教育与专业服务中心", "APAC"],
+      ["perth", "珀斯", ["Perth"], "澳大利亚 · 西澳大利亚州", 160, "矿业、能源与海洋产业中心", "APAC"],
+      ["auckland", "奥克兰", ["Auckland", "Tāmaki Makaurau"], "新西兰 · 奥克兰大区", 130, "贸易、金融与商业服务中心", "APAC"],
+      ["tianjin", "天津", ["Tianjin"], "中国 · 华北", 240, "港口物流、先进制造与航空航天中心", "APAC"],
+      ["hangzhou", "杭州", ["Hangzhou"], "中国 · 华东", 280, "数字经济、电子商务与先进制造中心", "APAC"],
+      ["suzhou", "苏州", ["Suzhou"], "中国 · 华东", 260, "电子信息、生物医药与高端制造中心", "APAC"],
+      ["wuhan", "武汉", ["Wuhan"], "中国 · 华中", 200, "光电子、汽车与教育科研中心", "APAC"],
+      ["nanjing", "南京", ["Nanjing"], "中国 · 华东", 210, "软件、电子信息与先进制造中心", "APAC"],
+      ["chongqing", "重庆", ["Chongqing"], "中国 · 西南", 350, "汽车、电子制造与物流中心", "APAC"],
+      ["qingdao", "青岛", ["Qingdao"], "中国 · 华东", 180, "港口贸易、家电与海洋产业中心", "APAC"],
+      ["ningbo", "宁波", ["Ningbo"], "中国 · 华东", 180, "港口物流、石化与先进制造中心", "APAC"],
+      ["zhengzhou", "郑州", ["Zhengzhou"], "中国 · 华中", 170, "电子制造、物流与商贸中心", "APAC"],
+      ["changsha", "长沙", ["Changsha"], "中国 · 华中", 170, "工程机械、消费品与文化创意中心", "APAC"],
+      ["wuxi", "无锡", ["Wuxi"], "中国 · 华东", 170, "物联网、集成电路与先进制造中心", "APAC"],
+      ["jinan", "济南", ["Jinan"], "中国 · 华北", 150, "软件、装备制造与区域商务中心", "APAC"],
+      ["hefei", "合肥", ["Hefei"], "中国 · 华东", 150, "集成电路、新能源汽车与科研创新中心", "APAC"],
+      ["foshan", "佛山", ["Foshan"], "中国 · 华南", 150, "家电、装备制造与泛家居产业中心", "APAC"],
+      ["dongguan", "东莞", ["Dongguan"], "中国 · 华南", 160, "电子信息、智能终端与先进制造中心", "APAC"],
+      ["xian", "西安", ["Xi'an", "Xian", "西安市"], "中国 · 西北", 150, "航空航天、电子信息与科研教育中心", "APAC"],
+      ["dalian", "大连", ["Dalian"], "中国 · 东北", 130, "港口物流、软件与先进制造中心", "APAC"],
+      ["shenyang", "沈阳", ["Shenyang"], "中国 · 东北", 120, "装备制造、汽车与航空产业中心", "APAC"],
+      ["fuzhou", "福州", ["Fuzhou"], "中国 · 华东", 120, "电子信息、纺织与海洋经济中心", "APAC"],
+      ["xiamen", "厦门", ["Xiamen", "Amoy"], "中国 · 华东", 110, "电子信息、贸易与现代服务中心", "APAC"],
+      ["wenzhou", "温州", ["Wenzhou"], "中国 · 华东", 110, "民营制造、鞋服与商贸服务中心", "APAC"],
+      ["shaoxing", "绍兴", ["Shaoxing"], "中国 · 华东", 110, "纺织、化工与先进制造中心", "APAC"],
+      ["osaka", "大阪", ["Osaka"], "日本 · 近畿地区", 700, "制造、商贸与医疗科技中心", "APAC"],
+      ["nagoya", "名古屋", ["Nagoya"], "日本 · 中部地区", 500, "汽车、航空航天与精密制造中心", "APAC"],
+      ["yokohama", "横滨", ["Yokohama"], "日本 · 关东地区", 350, "港口贸易、汽车与生物医药中心", "APAC"],
+      ["kyoto", "京都", ["Kyoto"], "日本 · 近畿地区", 200, "精密制造、电子与文化旅游中心", "APAC"],
+      ["kobe", "神户", ["Kobe"], "日本 · 近畿地区", 180, "港口物流、医疗与先进制造中心", "APAC"],
+      ["sapporo", "札幌", ["Sapporo"], "日本 · 北海道", 150, "旅游、食品加工与数字产业中心", "APAC"],
+      ["fukuoka", "福冈", ["Fukuoka"], "日本 · 九州地区", 140, "商业服务、物流与初创科技中心", "APAC"],
+      ["busan", "釜山", ["Busan", "Pusan"], "韩国 · 东南地区", 150, "港口物流、造船与商业服务中心", "APAC"],
+      ["hong-kong", "香港", ["Hong Kong", "香港特别行政区"], "中国 · 香港特别行政区", 400, "国际金融、贸易与专业服务中心", "APAC"],
+      ["taipei", "台北", ["Taipei", "台北市"], "中国 · 台湾地区", 300, "半导体、科技与金融中心", "APAC"],
+      ["bangkok", "曼谷", ["Bangkok", "Krung Thep"], "泰国 · 曼谷都会区", 300, "旅游、制造与区域商业中心", "APAC"],
+      ["jakarta", "雅加达", ["Jakarta", "DKI Jakarta"], "印度尼西亚 · 雅加达都会区", 300, "金融、商贸与数字经济中心", "APAC"],
+      ["manila", "马尼拉", ["Manila", "Metro Manila"], "菲律宾 · 马尼拉大都会", 200, "商务外包、金融与消费服务中心", "APAC"],
+      ["kuala-lumpur", "吉隆坡", ["Kuala Lumpur", "KL"], "马来西亚 · 巴生谷", 200, "金融、电子制造与区域总部中心", "APAC"],
+      ["mumbai", "孟买", ["Mumbai", "Bombay"], "印度 · 马哈拉施特拉邦", 450, "金融、媒体与商业服务中心", "APAC"],
+      ["delhi", "德里", ["Delhi", "New Delhi", "National Capital Region"], "印度 · 国家首都辖区", 400, "政府服务、科技与消费中心", "APAC"],
+      ["bengaluru", "班加罗尔", ["Bengaluru", "Bangalore"], "印度 · 卡纳塔克邦", 250, "软件、研发与航空航天中心", "APAC"],
+      ["hyderabad", "海得拉巴", ["Hyderabad"], "印度 · 特伦甘纳邦", 150, "软件、生物医药与数据中心", "APAC"],
+      ["chennai", "金奈", ["Chennai", "Madras"], "印度 · 泰米尔纳德邦", 150, "汽车、软件与港口物流中心", "APAC"],
+      ["pune", "浦那", ["Pune"], "印度 · 马哈拉施特拉邦", 130, "汽车、软件与教育科研中心", "APAC"],
+      ["kolkata", "加尔各答", ["Kolkata", "Calcutta"], "印度 · 西孟加拉邦", 160, "商贸、金融与教育科研中心", "APAC"],
+      ["ahmedabad", "艾哈迈达巴德", ["Ahmedabad"], "印度 · 古吉拉特邦", 130, "制造、制药与商业服务中心", "APAC"],
+      ["mexico-city", "墨西哥城", ["Mexico City", "Ciudad de México", "CDMX"], "墨西哥 · 墨西哥谷", 500, "金融、制造与商业服务中心", "AM"],
+      ["sao-paulo", "圣保罗", ["São Paulo", "Sao Paulo"], "巴西 · 圣保罗州", 650, "金融、制造与商业服务中心", "AM"],
+      ["rio-de-janeiro", "里约热内卢", ["Rio de Janeiro", "Rio"], "巴西 · 里约热内卢州", 250, "能源、旅游与媒体中心", "AM"],
+      ["buenos-aires", "布宜诺斯艾利斯", ["Buenos Aires", "CABA"], "阿根廷 · 布宜诺斯艾利斯都会区", 200, "金融、农业贸易与创意产业中心", "AM"],
+      ["santiago", "圣地亚哥", ["Santiago", "Santiago de Chile"], "智利 · 圣地亚哥首都大区", 150, "金融、矿业服务与零售中心", "AM"],
+      ["bogota", "波哥大", ["Bogotá", "Bogota"], "哥伦比亚 · 昆迪纳马卡省", 140, "金融、商贸与专业服务中心", "AM"],
+      ["lima", "利马", ["Lima"], "秘鲁 · 利马都会区", 120, "金融、贸易与消费服务中心", "AM"],
+      ["dubai", "迪拜", ["Dubai"], "阿联酋 · 迪拜酋长国", 200, "贸易、航空、金融与旅游中心", "ME"],
+      ["riyadh", "利雅得", ["Riyadh"], "沙特阿拉伯 · 利雅得省", 200, "政府服务、金融与能源总部中心", "ME"],
+      ["doha", "多哈", ["Doha"], "卡塔尔 · 多哈市", 150, "能源、航空与国际商务中心", "ME"],
+      ["tel-aviv", "特拉维夫", ["Tel Aviv", "Tel Aviv-Yafo"], "以色列 · 特拉维夫区", 150, "科技、金融与创新创业中心", "ME"],
+      ["johannesburg", "约翰内斯堡", ["Johannesburg", "Joburg"], "南非 · 豪登省", 120, "金融、矿业服务与商业中心", "AF"],
+      ["cairo", "开罗", ["Cairo", "Al-Qahirah"], "埃及 · 开罗省", 150, "政府服务、制造与区域商业中心", "AF"],
+      ["lagos", "拉各斯", ["Lagos"], "尼日利亚 · 拉各斯州", 120, "金融、贸易与数字服务中心", "AF"]
+    ];
+    const demoIndustryLabels = {
+      US: ["科技与信息", "金融服务", "先进制造", "医疗与生命科学", "商贸与专业服务"],
+      EU: ["金融与专业服务", "制造与工程", "科技与信息", "商贸与物流", "旅游与文化"],
+      APAC: ["先进制造", "金融服务", "科技与信息", "商贸与物流", "消费与专业服务"],
+      AM: ["商贸与金融", "制造与能源", "科技与信息", "消费与旅游", "专业服务"],
+      ME: ["能源与制造", "金融与贸易", "科技与信息", "房地产与建设", "旅游与专业服务"],
+      AF: ["金融与专业服务", "矿业与能源", "商贸与物流", "科技与信息", "消费与旅游"]
+    };
+    const demoShares = [29, 24, 20, 16, 11];
+    metroIndex.forEach(([key, name, aliases, region, gdpBillions, meta, group]) => {
+      const labels = demoIndustryLabels[group];
+      cities[key] = {
+        names: [name, ...aliases], english: aliases[0], region, meta, stamp: aliases[0].slice(0, 3).toUpperCase(),
+        gdpUSD: gdpBillions, gdpYear: "2023", demoData: true,
+        industries: labels.map((label, index) => ({
+          name: label, share: demoShares[index], growth: "待接入", direction: "up",
+          description: "该城市的细分行业占比尚未接入统一统计源；当前行业结构仅为产品演示分类。",
+          companies: [["企业名单待核验", "待补充"]],
+          trend: "行业趋势为通用演示内容，需结合当地官方统计与企业公开资料核验。"
+        }))
+      };
+    });
+    Object.entries(gdpReference).forEach(([key, value]) => {
+      cities[key].gdpUSD = value;
+      cities[key].gdpYear = "2023";
+    });
+    const eligibleCities = Object.fromEntries(
+      Object.entries(cities).filter(([, city]) => city.gdpUSD > 100)
+    );
+    const developmentDataYear = "2025";
+    const developmentData = {
+      beijing: {
+        growth: "5.4%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.4%。第三产业占 GDP 的 86.0%，增长 5.8%；第二产业增长 3.5%。增长结构由服务业支撑，产业间增速差异值得继续观察。",
+        opportunities: ["第三产业占比 86.0%，全年增长 5.8%，是主要经济支柱。", "服务业增速高于第二产业 2.3 个百分点。"],
+        risks: ["第二产业增长 3.5%，低于第三产业；工业及制造业增长动能仍需跟踪。"],
+        sources: [{ title: "北京市 2025 年国民经济和社会发展统计公报", url: "https://tjj.beijing.gov.cn/zxfbu/202603/t20260324_4564401.html" }]
+      },
+      shanghai: {
+        growth: "5.4%", basis: "地区生产总值 · 增速按不变价计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.4%。第三产业增长 6.0%，高于第二产业的 3.5%；信息传输、软件和信息技术服务业增长 15.3%，金融业增长 9.7%。服务业和部分现代服务行业增速较快。",
+        opportunities: ["信息传输、软件和信息技术服务业增长 15.3%。", "金融业增长 9.7%，第三产业整体增长 6.0%。"],
+        risks: ["第二产业增长 3.5%，与服务业增速存在差距；增长来源的行业集中度值得跟踪。"],
+        sources: [{ title: "2025 年上海市生产总值（上海市统计局）", url: "https://www.shanghai.gov.cn/nw48786/20260203/1ab1c983a3e34c339c8a5553f7757f49.html" }]
+      },
+      shenzhen: {
+        growth: "5.5%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.5%。第二产业增长 4.1%，第三产业增长 6.3%；服务业增速较快，制造业相关的第二产业也保持增长。",
+        opportunities: ["第三产业增长 6.3%，高于整体 GDP 增速。", "第二产业增长 4.1%，实体产业仍提供增长支撑。"],
+        risks: ["第二产业与第三产业增速相差 2.2 个百分点，需观察产业结构是否继续向服务业倾斜。"],
+        sources: [{ title: "深圳市 2025 年国民经济和社会发展统计公报", url: "https://tjj.sz.gov.cn/gkmlpt/content/12/12803/post_12803919.html" }]
+      },
+      guangzhou: {
+        growth: "4.0%", basis: "地区生产总值 · 按可比价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 4.0%。第三产业增长 4.8%，第二产业增长 1.6%；服务业对增长的支撑强于工业。",
+        opportunities: ["第三产业增加值增长 4.8%，高于全市 GDP 增速。", "消费与服务业是当年增长的重要支撑。"],
+        risks: ["第二产业增长 1.6%，明显低于第三产业；制造业和工业修复是后续观察重点。"],
+        sources: [{ title: "2025 年广州市国民经济和社会发展统计公报", url: "https://tjj.gz.gov.cn/zzfwzq/tjkx/content/post_10804061.html" }]
+      },
+      chengdu: {
+        growth: "5.8%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.8%。第三产业增长 6.1%，第二产业增长 5.4%；服务业贡献率为 70.6%，是主要增长来源。",
+        opportunities: ["第三产业增长 6.1%，对经济增长贡献率为 70.6%。", "第二产业增长 5.4%，与服务业共同保持增长。"],
+        risks: ["服务业贡献较高；评估还需结合后续年度行业数据检验增长来源是否持续。"],
+        sources: [{ title: "2025 年成都市国民经济和社会发展统计公报（成都日报转发市统计局公报）", url: "https://finance.sina.com.cn/jjxw/2026-04-15/doc-inhupeis3814625.shtml" }]
+      },
+      chongqing: {
+        growth: "5.3%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.3%。第三产业增长 6.2%，快于第二产业的 4.0%；智能网联新能源汽车产业集群增加值增长 13.4%。",
+        opportunities: ["智能网联新能源汽车产业集群增加值增长 13.4%。", "第三产业增长 6.2%，金融与交通运输等行业对增长有支撑。"],
+        risks: ["第二产业增长低于第三产业，制造业转型与新兴产业增长能否扩大覆盖面值得跟踪。"],
+        sources: [
+          { title: "2025 年重庆市经济运行情况（重庆市统计局）", url: "https://tjj.cq.gov.cn/zwgk_233/fdzdgknr/tjxx/sjjd_55469/202601/t20260126_15352288.html" },
+          { title: "重庆市统计局解读 2025 年统计公报", url: "https://tjj.cq.gov.cn/zwgk_233/fdzdgknr/tjxx/sjzl_55471/tjgb_55472/202603/t20260326_15568571.html" }
+        ]
+      },
+      nanjing: {
+        growth: "5.2%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.2%。第三产业增长 6.0%，第二产业增长 3.7%；高新技术产业产值占规上工业总产值的 55.2%。",
+        opportunities: ["第三产业增长 6.0%，对 GDP 增长拉动 4.0 个百分点。", "高新技术产业产值占规上工业总产值 55.2%，部分先进制造行业增长较快。"],
+        risks: ["第二产业增长 3.7%，低于服务业增速；需观察工业增长面能否进一步扩大。"],
+        sources: [{ title: "2025 年南京经济运行情况（南京市统计局）", url: "https://tjj.nanjing.gov.cn/gzdt/202602/t20260203_5785885.html" }]
+      },
+      suzhou: {
+        growth: "5.4%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.4%。第二产业增长 5.6%，第三产业增长 5.2%；信息传输、软件和信息技术服务业增长 8.7%，租赁和商务服务业增长 9.1%。",
+        opportunities: ["第二产业增长 5.6%，工业基础对增长有支撑。", "信息服务和商务服务分别增长 8.7% 和 9.1%。"],
+        risks: ["第二产业占 GDP 的 46.4%，制造业景气变化对整体经济的影响值得持续关注。"],
+        sources: [{ title: "2025 年苏州市国民经济和社会发展统计公报（苏州市统计局）", url: "https://tjj.suzhou.gov.cn/sztjj/tjgb/202604/3dc4b574cabd4e86b36ec5d3280e927c.shtml" }]
+      },
+      wuhan: {
+        growth: "5.6%", basis: "地区生产总值 · 按不变价格计算 · 同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值实际增长 5.6%。第三产业增长 5.9%，第二产业增长 5.0%；服务业占 GDP 的 68.1%，是城市经济的主要组成部分。",
+        opportunities: ["第三产业增长 5.9%，快于整体 GDP 增速。", "第二产业增长 5.0%，制造业与服务业均保持正增长。"],
+        risks: ["服务业与第二产业增速差距不大；需结合后续数据观察增长动能在行业间的变化。"],
+        sources: [{ title: "2025 年武汉市国民经济和社会发展统计公报", url: "https://tjj.wuhan.gov.cn/tjfw/tjgb/202604/t20260408_2750693.shtml" }]
+      },
+      hangzhou: {
+        growth: "5.2%", basis: "地区生产总值 · 2025 年同比", sourceLevel: "市级统计",
+        assessment: "2025 年地区生产总值增长 5.2%。第三产业占 GDP 的 73.8%，第二产业占 24.5%；产业结构以服务业为主。",
+        opportunities: ["第三产业占 GDP 的 73.8%，构成经济主体。", "GDP 增速 5.2%，高于同期全国 5.0% 的增速。"],
+        risks: ["页面可用的行业分项增速资料不足，不能据此判断具体产业的当年带动作用。"],
+        sources: [{ title: "杭州市政府工作报告（杭州市人民政府公报）", url: "https://zfgb.hangzhou.gov.cn/148/102220263/t103220263024/530188.shtml" }]
+      },
+      "new-york": {
+        growth: "约 1.0%", growthYear: "2025", growthMetric: "就业增长估算", growthPeriod: "2025 年 Q4-Q4 变化 · 含预测",
+        basis: "纽约市总就业人数；报告估算 Q4-Q4 增加 44,300 个岗位。以 2024 年平均就业 4,630,616 为基数计算约 1.0%；2025 数值含两季度初步实绩和两季度预测，不是 GDP 增速。",
+        sourceLevel: "纽约市财政监察长报告",
+        assessment: "纽约市财政监察长报告指出，2025 年就业增长集中在教育与医疗、政府等行业；金融、信息及专业商务服务等高薪办公行业就业预估走弱。按报告的总就业变化测算，全年就业增幅约 1.0%，其中包含预测值。",
+        opportunities: ["教育与医疗行业预计增加约 47,100 个岗位，是主要就业增长来源。", "政府行业预计增加约 10,200 个岗位。"],
+        risks: ["金融、信息、专业与商务服务等高薪办公行业合计预计减少约 9,400 个岗位。", "2025 年 Q4-Q4 总就业变化混合初步实绩和预测；该指标不可当作 GDP 增速。"],
+        sources: [{ title: "纽约市财政监察长：2025 年城市经济与财政年度报告", url: "https://comptroller.nyc.gov/reports/annual-state-of-the-citys-economy-and-finances-2025/" }]
+      },
+      tokyo: {
+        growth: "0.5%", growthYear: "2023", growthMetric: "实际 GDP 增长率", growthPeriod: "2023 财年同比",
+        basis: "东京都内总生产 · 实际链式价格 · 财年（每年 4 月至次年 3 月）；东京统计年鉴最新账号表列至 FY2023。",
+        sourceLevel: "东京都统计",
+        assessment: "东京都 FY2023 实际 GDP 增长 0.5%，低于 FY2022 的 3.8%；同期雇员报酬名义增长 4.6%。这显示总产出实际增幅温和，而劳动收入金额上升；两者统计口径不同，不能互相替代。",
+        opportunities: ["FY2023 雇员报酬按现价增长 4.6%，居民劳动收入总量有所上升。", "东京都统计年鉴提供按经济活动分类的地区账号，可继续追踪服务业与制造业变化。"],
+        risks: ["最新地区实际 GDP 年度仅增长 0.5%，且使用财年口径；与其他城市的公历年数据不宜直接排名。"],
+        sources: [{ title: "东京都都民经济计算年报 FY2023（统计年鉴）", url: "https://www.toukei.metro.tokyo.lg.jp/keizaik/nenpou/kk23qf0120.pdf" }]
+      },
+      london: {
+        growth: "1.3%", growthYear: "2024", growthMetric: "实际 GDP 增长率", growthPeriod: "2024 年同比",
+        basis: "Greater London · ONS ITL1 地区 · 链式量值（实际 GDP）；2024 年数据为初步值。",
+        sourceLevel: "英国国家统计局区域统计",
+        assessment: "Greater London 实际 GDP 在 2024 年增长 1.3%，高于英国整体的 1.1%；人均实际 GDP 增长 0.3%。整体产出有所扩张，但人均增速较低，评估应同时观察人口、生产率和行业构成。",
+        opportunities: ["2024 年区域实际 GDP 增长 1.3%，高于英国整体增速 1.1%。", "伦敦人均 GDP 为 £72,201，在英国 ITL1 地区中最高。"],
+        risks: ["人均实际 GDP 仅增长 0.3%，低于总量增速；需观察增长是否转化为人均产出提升。", "2024 年区域 GDP 数值仍为初步统计。"],
+        sources: [{ title: "英国国家统计局：1998–2024 年区域 GDP 活动统计（PDF）", url: "https://www.ons.gov.uk/economy/grossdomesticproductgdp/bulletins/regionaleconomicactivitybygrossdomesticproductuk/1998to2024/pdf" }]
+      },
+      singapore: {
+        growth: "4.8%", growthYear: "2025", growthMetric: "实际 GDP 增长率", growthPeriod: "2025 全年初步估计",
+        basis: "新加坡全国 GDP（城邦统计口径）· 全年初步估计；并非单独的市级行政区核算。",
+        sourceLevel: "新加坡统计局 / 贸易与工业部",
+        assessment: "新加坡 2025 年 GDP 初步估计增长 4.8%。新加坡数字经济报告显示，数字经济规模在 2024 年达到 GDP 的 18.6%，高于 2019 年的 14.9%。前者是全国年度总量，后者是上一年度的结构指标。",
+        opportunities: ["2024 年数字经济占 GDP 18.6%，较 2019 年的 14.9% 提升，数字化已覆盖多个传统行业。", "贸易与工业部公布的 2025 年行业资料可继续观察制造、贸易相关服务的贡献。"],
+        risks: ["2025 年全年增速为初步估计；新加坡采用全国口径，不能与大城市行政区 GDP 直接等同。"],
+        sources: [
+          { title: "新加坡统计局：2025 年 GDP 初步估计", url: "https://www.singstat.gov.sg/news/advance-gdp-estimate-4q2025" },
+          { title: "新加坡资讯通信媒体发展局：2025 数字经济报告摘要", url: "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2025/singapore-digital-economy" }
+        ]
+      },
+      seoul: {
+        growth: "1.0%", growthYear: "2024", growthMetric: "实际 GDP 增长率", growthPeriod: "2024 年同比",
+        basis: "首尔特别市地区 GDP · 2020 年链式价格 · 同比；来源为韩国国家统计部门地区所得初步结果。",
+        sourceLevel: "韩国国家统计部门区域统计",
+        assessment: "首尔 2024 年实际地区 GDP 增长 1.0%。金融与保险活动增长 5.9%、房地产增长 2.5%；批发零售下降 2.2%，专业、科学及技术服务下降 1.4%。行业表现分化明显。",
+        opportunities: ["金融与保险活动增加值增长 5.9%，房地产活动增长 2.5%。"],
+        risks: ["批发零售下降 2.2%，专业、科学及技术活动下降 1.4%；增长并未覆盖所有服务行业。"],
+        sources: [{ title: "韩国国家统计部门：2024 年地区所得初步统计（PDF）", url: "https://www.kostat.go.kr/boardDownload.es?bid=11755&list_no=443802&seq=1" }]
+      },
+      paris: {
+        growth: "4.3%", growthYear: "2024", growthMetric: "名义 GDP 增幅", growthPeriod: "2024 年同比 · 未扣除价格变化",
+        basis: "法兰西岛大区名义 GDP：2024 年 €865,652 百万、2023 年 €829,638 百万；由两年现价值计算，2024 统计为暂定值。",
+        sourceLevel: "法国国家统计与经济研究所区域统计",
+        assessment: "法兰西岛大区 2024 年名义 GDP 按 INSEE 公布的现价值计算增长约 4.3%；这不是实际 GDP 增速。同期大区新设企业数增长 5.7%，企业创建活动回升。对发展情况的判断仍需结合扣除价格后的产出和就业数据。",
+        opportunities: ["2024 年法兰西岛新设企业数增长 5.7%，公司设立和微型企业均有增长。", "法兰西岛 2024 年名义 GDP 为约 €865.7 十亿，是法国 GDP 规模最大的地区。"],
+        risks: ["2024 年名义 GDP 增幅包含价格变化，不能与实际 GDP 增速直接比较。", "2024 年底 A 类求职者人数同比增长 5.0%，劳动力市场仍需观察。"],
+        sources: [
+          { title: "INSEE：2024 年地区 GDP 比较（现价，2024 暂定）", url: "https://www.insee.fr/fr/statistiques/2012723" },
+          { title: "INSEE：法兰西岛 2024 年企业创建情况", url: "https://www.insee.fr/fr/statistiques/8354547" },
+          { title: "INSEE：法兰西岛 2024 年经济综述", url: "https://www.insee.fr/fr/statistiques/8354581?sommaire=8354913" }
+        ]
+      },
+      "san-francisco": {
+        growth: "暂缺", growthYear: "2025–26", growthMetric: "年度 GDP 增速", growthPeriod: "市级年度 GDP 数值暂缺",
+        basis: "旧金山市府 2026 年 1 月经济观察追踪都会区就业、失业率、办公出勤、游客流量及住房等指标；该报告未给出市级年度 GDP 增速。就业区域口径含 San Francisco 与 San Mateo 两县。",
+        sourceLevel: "旧金山经济分析办公室城市指标",
+        assessment: "旧金山市府最新经济观察显示，2025 年末就业回升主要来自季节性较强的休闲酒店和零售业；同时失业率呈上行趋势，市中心访客流量持续改善。官方资料未提供可替代 GDP 的市级年度增长率，因此这里只并列观察就业和城市活动指标。",
+        opportunities: ["2025 年市中心访客流量保持上升趋势。", "2025 年末零售及休闲酒店就业带来季节性回升；职位发布指数也出现反弹。"],
+        risks: ["市府报告指出失业率趋升，且就业改善主要受季节性行业带动。", "2024 年 11 月旧金山都会区办公出勤约为疫情前的 42%，商业办公复苏仍不充分。"],
+        sources: [
+          { title: "旧金山市经济分析办公室：旧金山经济状态（2026 年 1 月）", url: "https://media.api.sf.gov/documents/Status_of_the_San_Francisco_Economy_January_2026.pdf" },
+          { title: "旧金山市五年财政计划：办公出勤及就业行业观察", url: "https://media.api.sf.gov/documents/Five_Year_Financial_Plan_FY_25-26_through_FY_29-30_FINAL_0.pdf" }
+        ]
+      }
+    };
+
+    const $ = (id) => document.getElementById(id);
+    $("city-count").textContent = `可搜索 ${Object.keys(eligibleCities).length} 座`;
+    let activeCity = "new-york";
+    let selectedIndustry = 0;
+    const comparisonCities = ["new-york", "shanghai"];
+
+    function populateCitySuggestions() {
+      const seen = new Set();
+      Object.values(eligibleCities).forEach((city) => {
+        city.names.forEach((name) => {
+          const normalized = name.toLowerCase();
+          if (seen.has(normalized)) return;
+          seen.add(normalized);
+          const option = document.createElement("option");
+          option.value = name;
+          option.label = `${city.names[0]} · ${city.region}`;
+          $("city-options").append(option);
+        });
+      });
+    }
+
+    function formatGdp(gdpBillions) {
+      const isTrillion = gdpBillions >= 1000;
+      const value = isTrillion ? (gdpBillions / 1000).toFixed(gdpBillions % 1000 === 0 ? 0 : 1) : String(gdpBillions);
+      return { value: `$${value}`, unit: isTrillion ? "万亿美元" : "十亿美元" };
+    }
+
+    function industryGradient(industries) {
+      let cursor = 0;
+      return `conic-gradient(${industries.map((item, index) => {
+        const start = cursor;
+        cursor += item.share;
+        return `${palette[index % palette.length]} ${start}% ${cursor}%`;
+      }).join(", ")})`;
+    }
+
+    let localAiController = null;
+    let localAiRequestId = 0;
+
+    function setMetric(id, value, unit) {
+      const node = $(id);
+      node.replaceChildren(document.createTextNode(value));
+      if (unit) {
+        const suffix = document.createElement("span");
+        suffix.textContent = unit;
+        node.append(suffix);
+      }
+    }
+
+    function textNode(tag, className, value) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      node.textContent = value;
+      return node;
+    }
+
+    function renderCity(cityKey) {
+      const city = cities[cityKey];
+      if (localAiController) {
+        localAiController.abort();
+        localAiController = null;
+      }
+      localAiRequestId++;
+      activeCity = cityKey;
+      selectedIndustry = 0;
+      $("app").classList.add("loading");
+      $("city-name").textContent = city.names[0];
+      $("city-meta").textContent = city.meta;
+      $("city-region").textContent = city.region;
+      $("city-stamp").textContent = city.stamp;
+      const gdp = formatGdp(city.gdpUSD);
+      $("gdp").innerHTML = `${gdp.value}<span>${gdp.unit}</span>`;
+      $("gdp-year").innerHTML = `${city.gdpYear}<span>参考估算值</span>`;
+      $("chart-city").textContent = city.names[0];
+      $("chart").setAttribute("aria-label", `${city.names[0]}产业结构饼图`);
+      $("donut").style.background = industryGradient(city.industries);
+      $("legend").innerHTML = city.industries.map((item, index) =>
+        `<div class="legend-item"><span class="legend-dot" style="background:${palette[index % palette.length]}"></span><span>${item.name}</span><strong>${item.share}%</strong></div>`
+      ).join("");
+      $("industry-list").innerHTML = city.industries.map((item, index) =>
+        `<button type="button" role="listitem" class="industry-button${index === selectedIndustry ? " selected" : ""}" data-industry="${index}"><span class="legend-dot" style="background:${palette[index % palette.length]}"></span><span class="industry-name">${item.name}</span><span class="industry-share">${item.share}%</span></button>`
+      ).join("");
+      document.querySelectorAll(".city-chip").forEach((button) => button.classList.toggle("active", button.dataset.city === cityKey));
+      renderIndustry();
+      renderAnalysis(cityKey, null, window.location.protocol === "file:" ? "离线统计评估" : "本地统计评估");
+      $("status").textContent = "";
+      $("app").classList.remove("loading");
+      if (window.location.protocol !== "file:" && developmentData[cityKey]) generateLocalAssessment(cityKey);
+    }
+
+    function renderComparison() {
+      const grid = $("comparison-grid");
+      $("comparison-count").textContent = `${comparisonCities.length} / 3 座城市`;
+      const atLimit = comparisonCities.length >= 3;
+      $("comparison-input").disabled = atLimit;
+      $("comparison-add-button").disabled = atLimit;
+      if (!comparisonCities.length) {
+        grid.innerHTML = '<p class="compare-empty">还没有选择对比城市，请在上方输入城市名称。</p>';
+        return;
+      }
+      const highestGdp = Math.max(...comparisonCities.map((cityKey) => cities[cityKey].gdpUSD));
+      grid.innerHTML = comparisonCities.map((cityKey) => {
+        const city = cities[cityKey];
+        const gdp = formatGdp(city.gdpUSD);
+        const ratio = Math.round((city.gdpUSD / highestGdp) * 100);
+        return `<article class="compare-card">
+          <div class="compare-card-head"><div><div class="compare-region">${city.region}</div><h3 class="compare-name">${city.names[0]}</h3></div><button class="compare-remove" type="button" data-remove-city="${cityKey}" aria-label="从对比中移除${city.names[0]}">移除</button></div>
+          <div class="compare-gdp-row"><span class="compare-gdp-label">都会区 GDP · ${city.gdpYear}参考</span><strong class="compare-gdp-value">${gdp.value}<small>${gdp.unit}</small></strong></div>
+          <div class="compare-bar-track" aria-hidden="true"><div class="compare-bar" style="width:${ratio}%"></div></div>
+          <p class="compare-caption">约为本组最高参考值的 ${ratio}% · 名义美元估算</p>
+        </article>`;
+      }).join("");
+    }
+
+    function addComparisonCity() {
+      const input = $("comparison-input");
+      const query = input.value.trim();
+      const cityKey = findCity(query);
+      if (!query) {
+        $("comparison-status").textContent = "请输入城市名称后再添加。";
+        input.focus();
+        return;
+      }
+      if (!cityKey) {
+        $("comparison-status").textContent = "暂未收录该城市，请从输入联想中选择已收录城市。";
+        return;
+      }
+      if (comparisonCities.includes(cityKey)) {
+        $("comparison-status").textContent = `${cities[cityKey].names[0]}已经在对比列表中。`;
+        return;
+      }
+      if (comparisonCities.length >= 3) {
+        $("comparison-status").textContent = "最多可同时对比三座城市，请先移除一座。";
+        return;
+      }
+      comparisonCities.push(cityKey);
+      input.value = "";
+      $("comparison-status").textContent = `已加入${cities[cityKey].names[0]}。`;
+      renderComparison();
+    }
+
+    function renderIndustry() {
+      const item = cities[activeCity].industries[selectedIndustry];
+      $("industry-list").querySelectorAll(".industry-button").forEach((button, index) => button.classList.toggle("selected", index === selectedIndustry));
+      $("industry-detail").innerHTML = `
+        <div class="industry-detail-top"><h3 class="industry-detail-title">${item.name}</h3><span class="growth${item.direction === "down" ? " down" : ""}">${cities[activeCity].demoData ? "数据待接入" : `趋势 ${item.growth}`}</span></div>
+        <p class="industry-description">${item.description}</p>
+        <div class="companies-label">${cities[activeCity].demoData ? "代表企业 · 待补充核验" : "代表企业 · 按行业影响力列举"}</div>
+        <div class="companies">${item.companies.map(([name, size]) => `<span class="company">${name}<small>${size}</small></span>`).join("")}</div>`;
+    }
+
+    function renderAnalysis(cityKey = activeCity, generatedAssessment = null, status = "") {
+      const city = cities[cityKey];
+      const data = developmentData[cityKey];
+      const aiAssessment = $("ai-assessment");
+      const existingData = $("existing-data");
+      aiAssessment.replaceChildren();
+      existingData.replaceChildren();
+      $("analysis-caption").textContent = data ? `${city.names[0]} · ${status || "离线整理版"}` : `${city.names[0]} · 尚无可核查资料`;
+      const button = $("analyze-button");
+      const isLoading = status === "本地 AI 正在整理…";
+      button.disabled = !data || isLoading;
+      button.setAttribute("aria-busy", String(isLoading));
+      $("analyze-label").textContent = isLoading ? "本机 AI 正在生成…" : (window.location.protocol === "file:" ? "需启动本机服务" : (status.includes("Ollama 模型生成") ? "重新生成实时 AI" : "生成实时 AI"));
+
+      if (!data) {
+        $("growth-label").textContent = "GDP 增长率";
+        setMetric("growth-rate", "待补数据", "离线数据暂未收录");
+        $("data-year-tag").textContent = "待补录";
+        const summary = document.createElement("strong");
+        summary.textContent = `${city.names[0]}暂未收录在本地资料中。`;
+        aiAssessment.append(summary, document.createTextNode(" 因缺少可核查的增长率与产业资料，暂不生成发展判断。"));
+        aiAssessment.append(textNode("div", "analysis-extra", "本机 AI 只依据页面收录资料分析，不会联网搜索或自行补造数据。"));
+        existingData.append(textNode("div", "data-section-title", "资料覆盖"));
+        const coverage = document.createElement("div");
+        coverage.className = "data-points";
+        ["北京", "上海", "深圳", "广州", "成都", "重庆", "南京", "苏州", "武汉", "杭州", "纽约", "东京", "伦敦", "新加坡", "首尔", "巴黎", "旧金山"].forEach((name) => coverage.append(textNode("div", "data-point", name)));
+        existingData.append(coverage, textNode("div", "analysis-extra", "17 座城市的增长指标与来源按各自统计期和口径收录；其他城市可在补入可核查资料后纳入。"));
+        return;
+      }
+      const growthYear = data.growthYear || developmentDataYear;
+      const growthPeriod = data.growthPeriod || (growthYear + " 年 GDP 同比");
+      $("growth-label").textContent = data.growthMetric || "GDP 增长率";
+      setMetric("growth-rate", data.growth, growthPeriod);
+      $("data-year-tag").textContent = "资料期 " + growthYear;
+
+      const summary = document.createElement("strong");
+      summary.textContent = `${city.names[0]}发展评估：`;
+      aiAssessment.append(summary, document.createTextNode(generatedAssessment || data.assessment));
+      const aiNote = generatedAssessment
+        ? "本机 Ollama 模型即时生成 · 依据右侧收录资料"
+        : isLoading
+          ? "本机模型正在依据右侧收录资料生成，请稍候…"
+          : status.startsWith("请启动")
+            ? "启动 start.bat 并运行本机 Ollama 后可生成 · 此处先显示离线整理版"
+            : "离线整理版 · 本机模型未生成时使用，不构成预测";
+      aiAssessment.append(textNode("div", "analysis-extra", aiNote));
+
+      existingData.append(textNode("div", "data-section-title", "增长统计"));
+      const growth = document.createElement("div");
+      growth.className = "data-growth";
+      growth.append(textNode("strong", "", data.growth), textNode("span", "", growthPeriod));
+      existingData.append(growth, textNode("div", "analysis-extra", `${data.basis} · ${data.sourceLevel}`));
+
+      const addPointGroup = (label, entries) => {
+        existingData.append(textNode("div", "data-section-title", label));
+        const points = document.createElement("div");
+        points.className = "data-points";
+        (Array.isArray(entries) ? entries : []).forEach((entry) => points.append(textNode("div", "data-point", String(entry))));
+        if (!points.childElementCount) points.append(textNode("div", "data-point", "暂无已收录内容。"));
+        existingData.append(points);
+      };
+      addPointGroup("产业观察", data.opportunities);
+      addPointGroup("关注事项", data.risks);
+
+      const sources = document.createElement("div");
+      sources.className = "analysis-sources";
+      sources.append(textNode("div", "data-section-title", "来源链接"));
+      data.sources.forEach((source) => {
+        if (!source || !/^https?:\/\//i.test(source.url || "")) return;
+        const link = document.createElement("a");
+        link.href = source.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = source.title || source.url;
+        sources.append(link);
+      });
+      existingData.append(sources);
+    }
+
+    async function generateLocalAssessment(cityKey = activeCity) {
+      const data = developmentData[cityKey];
+      if (!data) {
+        return;
+      }
+      if (window.location.protocol === "file:") {
+        renderAnalysis(cityKey, null, "请启动 start.bat 与本地模型以启用 AI");
+        return;
+      }
+      if (localAiController) localAiController.abort();
+      localAiController = new AbortController();
+      const requestId = ++localAiRequestId;
+      renderAnalysis(cityKey, null, "本地 AI 正在整理…");
+      try {
+        const response = await fetch("/api/city-assessment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: localAiController.signal,
+          body: JSON.stringify({ city: city.names[0], data })
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || `请求失败（HTTP ${response.status}）`);
+        if (requestId !== localAiRequestId) return;
+        renderAnalysis(cityKey, payload.assessment || null, "由本机 Ollama 模型生成");
+      } catch (error) {
+        if (error.name === "AbortError" || requestId !== localAiRequestId) return;
+        renderAnalysis(cityKey, null, "本地 AI 未连接 · 显示离线统计评估");
+      }
+    }
+
+    function findCity(query) {
+      const normalized = query.trim().toLowerCase();
+      return Object.entries(eligibleCities).find(([, city]) => city.names.some((name) => name.toLowerCase() === normalized))?.[0];
+    }
+
+    $("search-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const query = $("city-input").value.trim();
+      if (!query) {
+        $("status").textContent = "请输入城市名称后再搜索。";
+        $("city-input").focus();
+        return;
+      }
+      const cityKey = findCity(query);
+      if (!cityKey) {
+        $("status").textContent = "暂未收录该城市。可用中文或英文名称搜索，或从输入联想中选择。";
+        return;
+      }
+      renderCity(cityKey);
+      $("city-input").value = "";
+      $("status").textContent = `已切换至${cities[cityKey].names[0]}。`;
+      window.setTimeout(() => { $("status").textContent = ""; }, 2200);
+    });
+
+    document.querySelectorAll(".city-chip").forEach((button) => button.addEventListener("click", () => renderCity(button.dataset.city)));
+    $("industry-list").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-industry]");
+      if (!button) return;
+      selectedIndustry = Number(button.dataset.industry);
+      renderIndustry();
+    });
+    $("analyze-button").addEventListener("click", () => {
+      generateLocalAssessment(activeCity);
+    });
+    $("comparison-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      addComparisonCity();
+    });
+    $("comparison-grid").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-remove-city]");
+      if (!button) return;
+      const index = comparisonCities.indexOf(button.dataset.removeCity);
+      if (index === -1) return;
+      comparisonCities.splice(index, 1);
+      $("comparison-status").textContent = "已从对比列表中移除城市。";
+      renderComparison();
+    });
+    populateCitySuggestions();
+    renderComparison();
+    renderCity(activeCity);
+  </script>
+</body>
+</html>
